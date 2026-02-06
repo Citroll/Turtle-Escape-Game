@@ -1,2 +1,15 @@
-# compiled java code
-.class
+# Java compiled files
+*.class
+
+# Build output
+bin/
+out/
+target/
+
+# IDE settings
+.idea/
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
