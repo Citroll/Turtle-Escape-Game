@@ -9,7 +9,11 @@ target/
 # IDE settings
 .idea/
 .vscode/
+*.iml
 
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Maven
+target/
