@@ -67,7 +67,7 @@
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>ca.sfu.cmpt276.turtleescape.App</mainClass>
+                                <mainClass>ca.sfu.cmpt276.turtleescape.Main</mainClass>
                             </manifest>
                         </archive>
                     </configuration>
@@ -97,7 +97,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>ca.sfu.cmpt276.turtleescape.App</mainClass>
+                    <mainClass>ca.sfu.cmpt276.turtleescape.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
