@@ -9,6 +9,9 @@ import java.awt.*;
  */
 public class GamePanel extends JPanel implements Runnable{
 
+    // FPS limit
+    int FPS = 60;
+
     /** The base tile size in pixels before scaling */
     final int originalTileSize = 16;
 
@@ -33,14 +36,24 @@ public class GamePanel extends JPanel implements Runnable{
     /** When we start the gameThread it will automatically call run() method*/
     Thread gameThread;
 
+    /** Make a new KeyHandler to listen for keyboard input*/
+    KeyHandler keyH = new KeyHandler();
+
+    /** Set player's default position*/
+    int playerX = 100;
+    int playerY = 100;
+    int playerSpeed = 4;
+
     /**
      * Constructs the GamePanel and initializes display settings.
-     * Sets preferred size, background color, and enables double buffering.
+     * Sets preferred size, background color, enables double buffering, and adds a key listener
      */
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
+        this.addKeyListener(keyH);
+        this.setFocusable(true);
     }
 
     public void startGameThread(){
@@ -50,19 +63,56 @@ public class GamePanel extends JPanel implements Runnable{
 
     @Override
     public void run() {
+
+        double drawInterval = 1_000_000_000.0/FPS; // 1 60th of a second
+        double nextDrawTime = System.nanoTime() + drawInterval; // Draw the screen after 1/60th of a second
+
+
         /** While this gameThread exists it will repeat the process inside of these brackets*/
         while(gameThread != null){
+
+            long currentTime = System.nanoTime();
 
             // Update: Character position
             update();
 
             // Update: Redraw screen with new info
             repaint();
+
+
+            try {
+                double remainingTime = nextDrawTime - System.nanoTime(); // How much time until nextDrawTime
+                remainingTime = remainingTime/1000000; // convert to milliseconds for sleep method
+
+                if(remainingTime < 0) {
+                    remainingTime = 0; // Just in case it uses more time than drawInterval
+                }
+
+                Thread.sleep((long)remainingTime); // Sleep for remaining time
+
+                nextDrawTime += drawInterval; // Add another 1/60th of a second for the loop
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
+    /**
+     * When Player presses WASD the player's coordinate increases/decreases by 4 pixels = playerSpeed
+     * Then key input is caught by keyHandler and then the update method updates the player coordinates in the game loop
+     * Then the repaint method is called to redraw the player in the new position
+     * */
     public void update(){
-
+        if(keyH.upPressed) {
+            playerY -= playerSpeed; // Y values decrease as they go up, top corner is X:0, Y:0
+        } if (keyH.downPressed){
+            playerY += playerSpeed; // Y values increase as they go down
+        } if (keyH.leftPressed){
+            playerX -= playerSpeed; // X values decrease as they go left
+        } if (keyH.rightPressed) {
+            playerX += playerSpeed; // X values increase as they go right
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -72,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         g2.setColor(Color.white);
 
-        g2.fillRect(100, 100, tileSize, tileSize);
+        g2.fillRect(playerX, playerY, tileSize, tileSize);
 
         g2.dispose();
     }
