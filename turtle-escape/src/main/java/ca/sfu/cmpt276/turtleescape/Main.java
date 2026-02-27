@@ -30,5 +30,7 @@ public class Main {
         // Set pop up location to the center of the screen
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        gamePanel.startGameThread();
     }
 }
