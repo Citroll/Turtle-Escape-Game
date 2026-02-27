@@ -1,5 +1,7 @@
 package ca.sfu.cmpt276.turtleescape;
 
+import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+
 import javax.swing.*;
 
 /**

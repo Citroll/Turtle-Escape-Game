@@ -1,4 +1,7 @@
-package ca.sfu.cmpt276.turtleescape;
+package ca.sfu.cmpt276.turtleescape.UI;
+
+import ca.sfu.cmpt276.turtleescape.entity.Player;
+import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable{
     final int scale = 3;
 
     /** The actual tile size after scaling (48x48 pixels) */
-    final int tileSize = originalTileSize * scale;
+    public final int tileSize = originalTileSize * scale;
 
     /** Number of tile columns on screen */
     final int maxScreenCol = 16;
@@ -38,6 +41,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     /** Make a new KeyHandler to listen for keyboard input*/
     KeyHandler keyH = new KeyHandler();
+
+    Player player = new Player(this, keyH);
 
     /** Set player's default position*/
     int playerX = 100;
@@ -104,15 +109,7 @@ public class GamePanel extends JPanel implements Runnable{
      * Then the repaint method is called to redraw the player in the new position
      * */
     public void update(){
-        if(keyH.upPressed) {
-            playerY -= playerSpeed; // Y values decrease as they go up, top corner is X:0, Y:0
-        } if (keyH.downPressed){
-            playerY += playerSpeed; // Y values increase as they go down
-        } if (keyH.leftPressed){
-            playerX -= playerSpeed; // X values decrease as they go left
-        } if (keyH.rightPressed) {
-            playerX += playerSpeed; // X values increase as they go right
-        }
+       player.update();
     }
 
     public void paintComponent(Graphics g) {
@@ -120,9 +117,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
-        g2.setColor(Color.white);
-
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
+        player.draw(g2);
 
         g2.dispose();
     }
