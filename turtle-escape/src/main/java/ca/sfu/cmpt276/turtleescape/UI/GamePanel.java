@@ -2,17 +2,19 @@ package ca.sfu.cmpt276.turtleescape.UI;
 
 import ca.sfu.cmpt276.turtleescape.entity.Player;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
+import ca.sfu.cmpt276.turtleescape.tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Represents the main game panel where all game rendering occurs.
+ * Represents the main game panel where all game rendering and logic occurs.
  * Extends JPanel to provide a drawable surface within the game window.
+ * Implements Runnable to support the game loop running on a separate thread.
  */
 public class GamePanel extends JPanel implements Runnable{
 
-    // FPS limit
+    /** Target frames per second for the game loop */
     int FPS = 60;
 
     /** The base tile size in pixels before scaling */
@@ -25,10 +27,10 @@ public class GamePanel extends JPanel implements Runnable{
     public final int tileSize = originalTileSize * scale;
 
     /** Number of tile columns on screen */
-    final int maxScreenCol = 16;
+    public final int maxScreenCol = 16;
 
     /** Number of tile rows on screen */
-    final int maxScreenRow = 12;
+    public final int maxScreenRow = 12;
 
     /** Total screen width in pixels */
     final int screenWidth = tileSize * maxScreenCol;
@@ -36,22 +38,22 @@ public class GamePanel extends JPanel implements Runnable{
     /** Total screen height in pixels */
     final int screenHeight = tileSize * maxScreenRow;
 
-    /** When we start the gameThread it will automatically call run() method*/
+    /** The thread that runs the game loop. Starting it calls run() automatically */
     Thread gameThread;
 
-    /** Make a new KeyHandler to listen for keyboard input*/
+    /** Handles keyboard input from the player */
     KeyHandler keyH = new KeyHandler();
 
+    /** The player-controlled turtle entity */
     Player player = new Player(this, keyH);
 
-    /** Set player's default position*/
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
+    /** Manages loading and rendering of all map tiles */
+    TileManager tileM = new TileManager(this);
 
     /**
      * Constructs the GamePanel and initializes display settings.
-     * Sets preferred size, background color, enables double buffering, and adds a key listener
+     * Sets preferred size, background color, enables double buffering,
+     * and registers the key listener for input.
      */
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -61,11 +63,20 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
     }
 
+    /**
+     * Creates and starts the game thread, which triggers the run() method.
+     * Should be called after the game window is made visible.
+     */
     public void startGameThread(){
         gameThread = new Thread(this);
         gameThread.start(); // will call run() method
     }
 
+    /**
+     * The main game loop. Runs continuously while the game thread is active.
+     * Caps the frame rate at {@code FPS} by sleeping for the remaining time
+     * in each frame interval. Each iteration updates game state and repaints the screen.
+     */
     @Override
     public void run() {
 
@@ -104,18 +115,28 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     /**
-     * When Player presses WASD the player's coordinate increases/decreases by 4 pixels = playerSpeed
-     * Then key input is caught by keyHandler and then the update method updates the player coordinates in the game loop
-     * Then the repaint method is called to redraw the player in the new position
-     * */
+     * Updates the game state for the current frame.
+     * Calls update on the player to process movement input.
+     * Will be extended to update enemies, score, timers, etc.
+     */
     public void update(){
        player.update();
     }
 
+    /**
+     * Renders all game elements to the screen.
+     * Draws the tile map first, then the player on top.
+     * Called automatically by repaint() each frame.
+     *
+     * @param g the Graphics context provided by Swing
+     */
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
+
+        tileM.draw(g2);
 
         player.draw(g2);
 

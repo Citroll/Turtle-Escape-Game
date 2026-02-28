@@ -7,12 +7,29 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.Buffer;
 
+
+/**
+ * Represents the player-controlled baby sea turtle.
+ * Handles player movement, sprite animation, and rendering.
+ * Extends Entity to inherit common position, speed, and sprite properties.
+ */
 public class Player extends Entity{
+
+
+    /** Reference to the game panel for accessing screen/tile dimensions */
     GamePanel gp;
+
+    /** Reference to the key handler for reading keyboard input */
     KeyHandler keyH;
 
+    /**
+     * Constructs a Player with references to the game panel and key handler.
+     * Sets default values and loads player sprite images.
+     *
+     * @param gp   the GamePanel this player belongs to
+     * @param keyH the KeyHandler used to read keyboard input
+     */
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
@@ -21,6 +38,10 @@ public class Player extends Entity{
         getPlayerImage();
     }
 
+
+    /**
+     * Sets the player's default starting position, speed, and direction.
+     */
     public void setDefaultValues() {
         x = 100;
         y = 100;
@@ -28,6 +49,10 @@ public class Player extends Entity{
         direction = "down";
     }
 
+    /**
+     * Loads all directional sprite images for the player turtle from resources.
+     * Each direction has two frames (1 and 2) to create a walking animation.
+     */
     public void getPlayerImage(){
         try {
             up1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleUp.png"));
@@ -43,6 +68,11 @@ public class Player extends Entity{
         }
     }
 
+    /**
+     * Updates the player's position and animation frame based on keyboard input.
+     * Called once per game tick. Moves the player by {@code speed} pixels in the
+     * pressed direction and alternates the sprite frame every 20 ticks.
+     */
     public void update(){
         // Only update player moves when keys are pressed
         if(keyH.downPressed || keyH.leftPressed || keyH.upPressed || keyH.rightPressed) {
@@ -63,7 +93,7 @@ public class Player extends Entity{
 
             // Change the image of the sprite every 20 frames
             spriteCounter++;
-            if(spriteCounter > 20) {
+            if(spriteCounter > 15) {
                 if(spriteNum == 1){
                     spriteNum = 2;
                 } else if (spriteNum == 2){
@@ -74,6 +104,13 @@ public class Player extends Entity{
         }
     }
 
+
+    /**
+     * Draws the player sprite on the game panel at the current position.
+     * Selects the correct sprite image based on direction and animation frame.
+     *
+     * @param g2 the Graphics2D context used for rendering
+     */
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 

@@ -3,14 +3,29 @@ package ca.sfu.cmpt276.turtleescape.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Handles keyboard input for the game.
+ * Implements KeyListener to track which movement keys are currently held down.
+ * Movement keys are WASD.
+ */
 public class KeyHandler implements KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
 
+    /**
+     * Not used. Required by KeyListener interface.
+     *
+     * @param e the key event
+     */
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     * Called when a key is pressed. Sets the corresponding direction flag to true.
+     *
+     * @param e the key event containing the key code of the pressed key
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode(); // Gets key number of key pressed and stores it
@@ -26,6 +41,11 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * Called when a key is released. Sets the corresponding direction flag to false.
+     *
+     * @param e the key event containing the key code of the released key
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
