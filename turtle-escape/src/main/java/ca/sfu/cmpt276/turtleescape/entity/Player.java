@@ -1,12 +1,13 @@
 package ca.sfu.cmpt276.turtleescape.entity;
 
-import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
-import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 
 
 /**
@@ -26,6 +27,8 @@ public class Player extends Entity{
     public final int screenX;
     public final int screenY;
 
+    public int score;
+
     /**
      * Constructs a Player with references to the game panel and key handler.
      * Sets default values and loads player sprite images.
@@ -36,6 +39,7 @@ public class Player extends Entity{
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
+        this.score = 0;
 
         screenX = gp.screenWidth / 2;
         screenY = gp.screenHeight / 2;

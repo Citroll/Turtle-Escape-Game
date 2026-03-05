@@ -1,11 +1,15 @@
 package ca.sfu.cmpt276.turtleescape.UI;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JPanel;
+
 import ca.sfu.cmpt276.turtleescape.entity.Player;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.tile.TileManager;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * Represents the main game panel where all game rendering and logic occurs.
@@ -54,6 +58,9 @@ public class GamePanel extends JPanel implements Runnable{
 
     /** Manages loading and rendering of all map tiles */
     TileManager tileM = new TileManager(this);
+
+    /** UI for managing score and time display */
+    public UI ui = new UI(this);
 
     /**
      * Constructs the GamePanel and initializes display settings.
@@ -144,6 +151,8 @@ public class GamePanel extends JPanel implements Runnable{
         tileM.draw(g2);
 
         player.draw(g2);
+
+        ui.draw(g2);
 
         g2.dispose();
     }
