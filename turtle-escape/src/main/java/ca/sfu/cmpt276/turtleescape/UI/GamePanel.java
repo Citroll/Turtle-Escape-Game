@@ -33,10 +33,15 @@ public class GamePanel extends JPanel implements Runnable{
     public final int maxScreenRow = 12;
 
     /** Total screen width in pixels */
-    final int screenWidth = tileSize * maxScreenCol;
+    public final int screenWidth = tileSize * maxScreenCol;
 
     /** Total screen height in pixels */
-    final int screenHeight = tileSize * maxScreenRow;
+    public final int screenHeight = tileSize * maxScreenRow;
+
+    public final int maxWorldCol = 64;
+    public final int maxWorldRow = 22;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
     /** The thread that runs the game loop. Starting it calls run() automatically */
     Thread gameThread;
@@ -45,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyH = new KeyHandler();
 
     /** The player-controlled turtle entity */
-    Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH);
 
     /** Manages loading and rendering of all map tiles */
     TileManager tileM = new TileManager(this);

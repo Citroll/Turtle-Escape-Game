@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 public class Entity {
 
     /** The x-coordinate of the entity on the screen in pixels */
-    public int x, y;
+    public int worldX, worldY;
 
     /** The movement speed of the entity in pixels per update */
     public int speed;
