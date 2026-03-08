@@ -9,6 +9,10 @@ import javax.swing.JPanel;
 
 import ca.sfu.cmpt276.turtleescape.entity.Player;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
+import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
+import ca.sfu.cmpt276.turtleescape.object.AssetSetter;
+import ca.sfu.cmpt276.turtleescape.object.OBJ_IceCream;
+import ca.sfu.cmpt276.turtleescape.object.SuperObject;
 import ca.sfu.cmpt276.turtleescape.tile.TileManager;
 
 /**
@@ -57,10 +61,34 @@ public class GamePanel extends JPanel implements Runnable{
     public Player player = new Player(this, keyH);
 
     /** Manages loading and rendering of all map tiles */
-    TileManager tileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
 
     /** UI for managing score and time display */
     public UI ui = new UI(this);
+
+    public CollisionChecker cChecker = new CollisionChecker(this);
+
+    /** Array of interactive objects on the map (rewards, items). Max 10 at once. */
+    public SuperObject[] obj = new SuperObject[10];
+
+    /** Handles placing objects onto the map */
+    public AssetSetter aSetter = new AssetSetter(this);
+
+    // --- Ice cream spawn/despawn config ---
+    /** Frames between spawn attempts (~5 seconds at 60fps) */
+    private static final int ICE_CREAM_SPAWN_INTERVAL = 300;
+    /** How many frames ice cream stays before vanishing (~3 seconds) */
+    private static final int ICE_CREAM_LIFETIME = 180;
+    /** Frame counter for spawn timing */
+    private int iceCreamSpawnTimer = 0;
+    /** Remaining lifetime for ice cream slot 4 (kid at col24/row5) */
+    private int iceCreamLife4 = 0;
+    /** Remaining lifetime for ice cream slot 5 (kid at col28/row14) */
+    private int iceCreamLife5 = 0;
+    /** True once ice cream 4 has been collected — won't respawn */
+    private boolean iceCream4Collected = false;
+    /** True once ice cream 5 has been collected — won't respawn */
+    private boolean iceCream5Collected = false;
 
     /**
      * Constructs the GamePanel and initializes display settings.
@@ -79,6 +107,14 @@ public class GamePanel extends JPanel implements Runnable{
      * Creates and starts the game thread, which triggers the run() method.
      * Should be called after the game window is made visible.
      */
+    /**
+     * Sets up the game by placing all objects on the map.
+     * Should be called before starting the game thread.
+     */
+    public void setupGame() {
+        aSetter.setObject();
+    }
+
     public void startGameThread(){
         gameThread = new Thread(this);
         gameThread.start(); // will call run() method
@@ -133,6 +169,60 @@ public class GamePanel extends JPanel implements Runnable{
      */
     public void update(){
        player.update();
+       updateIceCreamSpawns();
+    }
+
+    /**
+     * Marks an ice cream slot as permanently collected so it won't respawn.
+     *
+     * @param slot the obj array index (4 or 5)
+     */
+    public void setIceCreamCollected(int slot) {
+        if (slot == 4) iceCream4Collected = true;
+        if (slot == 5) iceCream5Collected = true;
+    }
+
+    /**
+     * Handles random spawning and timed despawning of ice cream below kid tiles.
+     * Ice cream appears one tile below each kid, stays for a few seconds, then vanishes.
+     */
+    private void updateIceCreamSpawns() {
+        iceCreamSpawnTimer++;
+
+        // Try to spawn ice cream every SPAWN_INTERVAL frames
+        if (iceCreamSpawnTimer >= ICE_CREAM_SPAWN_INTERVAL) {
+            iceCreamSpawnTimer = 0;
+
+            // 50% chance to spawn below kid 1 (col 24, row 5 → ice cream at row 6)
+            if (obj[4] == null && !iceCream4Collected && Math.random() < 0.5) {
+                obj[4] = new OBJ_IceCream();
+                obj[4].worldX = 24 * tileSize;
+                obj[4].worldY = 6 * tileSize;
+                iceCreamLife4 = ICE_CREAM_LIFETIME;
+            }
+
+            // 50% chance to spawn below kid 2 (col 28, row 14 → ice cream at row 15)
+            if (obj[5] == null && !iceCream5Collected && Math.random() < 0.5) {
+                obj[5] = new OBJ_IceCream();
+                obj[5].worldX = 28 * tileSize;
+                obj[5].worldY = 15 * tileSize;
+                iceCreamLife5 = ICE_CREAM_LIFETIME;
+            }
+        }
+
+        // Count down and despawn if time runs out
+        if (obj[4] != null) {
+            iceCreamLife4--;
+            if (iceCreamLife4 <= 0) {
+                obj[4] = null;
+            }
+        }
+        if (obj[5] != null) {
+            iceCreamLife5--;
+            if (iceCreamLife5 <= 0) {
+                obj[5] = null;
+            }
+        }
     }
 
     /**
@@ -149,6 +239,13 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D)g;
 
         tileM.draw(g2);
+
+        // Draw objects (between tiles and player so player walks over them)
+        for (int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                obj[i].draw(g2, this);
+            }
+        }
 
         player.draw(g2);
 

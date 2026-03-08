@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.turtleescape.entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -57,6 +58,9 @@ public class Player extends Entity{
         worldY = gp.tileSize * 10;
         speed = 4;
         direction = "down";
+        solidArea = new Rectangle(8, 16, 32, 32);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 
     /**
@@ -87,21 +91,51 @@ public class Player extends Entity{
         // Only update player moves when keys are pressed
         if(keyH.downPressed || keyH.leftPressed || keyH.upPressed || keyH.rightPressed) {
 
+            // Handle vertical movement (up/down)
             if(keyH.upPressed) {
                 direction = "up";
-                worldY -= speed; // Y values decrease as they go up, top corner is X:0, Y:0
-            } if (keyH.downPressed){
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+                int objIndex = gp.cChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+                if(!collisionOn) {
+                    worldY -= speed;
+                }
+            }
+            if(keyH.downPressed) {
                 direction = "down";
-                worldY += speed ; // Y values increase as they go down
-            } if (keyH.leftPressed){
-                direction = "left";
-                worldX -= speed; // X values decrease as they go left
-            } if (keyH.rightPressed) {
-                direction = "right";
-                worldX += speed; // X values increase as they go right
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+                int objIndex = gp.cChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+                if(!collisionOn) {
+                    worldY += speed;
+                }
             }
 
-            // Change the image of the sprite every 20 frames
+            // Handle horizontal movement (left/right)
+            if(keyH.leftPressed) {
+                direction = "left";
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+                int objIndex = gp.cChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+                if(!collisionOn) {
+                    worldX -= speed;
+                }
+            }
+            if(keyH.rightPressed) {
+                direction = "right";
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+                int objIndex = gp.cChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+                if(!collisionOn) {
+                    worldX += speed;
+                }
+            }
+
+            // Change the image of the sprite every 15 frames
             spriteCounter++;
             if(spriteCounter > 15) {
                 if(spriteNum == 1){
@@ -114,6 +148,31 @@ public class Player extends Entity{
         }
     }
 
+
+    /**
+     * Handles picking up an object when the player touches it.
+     * Removes the object from the map and updates the score.
+     *
+     * @param index the index of the object in the obj array, or 999 if none
+     */
+    public void pickUpObject(int index) {
+        if (index != 999) {
+            String objectName = gp.obj[index].name;
+
+            switch (objectName) {
+                case "Seaweed":
+                    score += 100;
+                    gp.obj[index] = null;
+                    break;
+                case "IceCream":
+                    score += 250;
+                    if (index == 4) { gp.setIceCreamCollected(4); }
+                    if (index == 5) { gp.setIceCreamCollected(5); }
+                    gp.obj[index] = null;
+                    break;
+            }
+        }
+    }
 
     /**
      * Draws the player sprite on the game panel at the current position.

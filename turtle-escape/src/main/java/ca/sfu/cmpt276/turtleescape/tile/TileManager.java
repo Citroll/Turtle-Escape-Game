@@ -21,10 +21,10 @@ public class TileManager {
     GamePanel gp;
 
     /** Array of all available tile types indexed by tile number */
-    Tile[] tile;
+    public Tile[] tile;
 
     /** 2D array storing the tile number for each cell in the map grid */
-    int[][] mapTileNum;
+    public int[][] mapTileNum;
 
     /**
      * Constructs the TileManager, loads tile images, and loads the map layout.
@@ -55,9 +55,15 @@ public class TileManager {
 
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/castle.png"));
+            tile[2].collision = true; // add for all barrier tiles
 
             tile[3] = new Tile();
             tile[3].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/tree.png"));
+            tile[3].collision = true;
+
+            tile[4] = new Tile();
+            tile[4].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/kid.png"));
+            tile[4].collision = true;
 
         } catch (IOException e) {
             e.printStackTrace();

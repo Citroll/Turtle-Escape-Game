@@ -1,5 +1,6 @@
 package ca.sfu.cmpt276.turtleescape.entity;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
@@ -25,4 +26,10 @@ public class Entity {
 
     /** The current sprite frame number (1 or 2) used for walking animation */
     public int spriteNum = 1;
+
+    public Rectangle solidArea;
+
+    public int solidAreaDefaultX, solidAreaDefaultY;
+
+    public boolean collisionOn = false;
 }
