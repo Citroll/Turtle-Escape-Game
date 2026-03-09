@@ -101,7 +101,8 @@ public class Player extends Entity{
                 if(!collisionOn) {
                     worldY -= speed;
                 }
-            } else if(keyH.downPressed) {
+            }
+            if(keyH.downPressed) {
                 direction = "down";
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
@@ -113,7 +114,7 @@ public class Player extends Entity{
             }
 
             // Handle horizontal movement (left/right)
-            else if(keyH.leftPressed) {
+            if(keyH.leftPressed) {
                 direction = "left";
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
@@ -122,7 +123,8 @@ public class Player extends Entity{
                 if(!collisionOn) {
                     worldX -= speed;
                 }
-            } else if(keyH.rightPressed) {
+            }
+            if(keyH.rightPressed) {
                 direction = "right";
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
