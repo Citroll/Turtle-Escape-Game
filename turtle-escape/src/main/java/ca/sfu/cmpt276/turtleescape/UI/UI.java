@@ -20,6 +20,9 @@ public class UI {
     /** The play button for the title screen */
     private Button playButton;
 
+    /** The resume button for the pause screen */
+    private Button resumeButton;
+
     /**
      * Represents the UI for the game
      * Handles the display settings for the score and timer
@@ -31,19 +34,26 @@ public class UI {
 
         font = new Font("Arial", Font.PLAIN, 50);
         playButton = new Button(0, 0, 200, 50, "PLAY", () -> gp.gameState = GamePanel.GameState.PLAYING);
+        resumeButton = new Button(0, 0, 200, 50, "RESUME", () -> gp.gameState = GamePanel.GameState.PLAYING);
     }
 
     /**
-     * Displays the UI including the time and text for the player's score
+     * Displays the UI including the time and text for the player's score.
+     * Only increments the timer when the game is actively playing.
+     *
+     * @param g2    the Graphics2D context used for rendering
+     * @param state the current game state
      */
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D g2, GamePanel.GameState state) {
         FontRenderContext frc = g2.getFontRenderContext();
         g2.setFont(font);
 
         /**
          * Time settings
          */
-        playTime += (double) 1 / 60;
+        if (state == GamePanel.GameState.PLAYING) {
+            playTime += (double) 1 / 60;
+        }
         GlyphVector timeGV = font.createGlyphVector(frc, "Time: " + dFormat.format(playTime));
         Shape timeShape = timeGV.getOutline(20, 40);
         g2.setColor(Color.white);
@@ -97,6 +107,36 @@ public class UI {
     }
 
     /**
+     * Draws the pause screen with semi-transparent overlay, "PAUSED" text, and
+     * resume button.
+     *
+     * @param g2     the Graphics2D context used for rendering
+     * @param width  the current width of the panel
+     * @param height the current height of the panel
+     */
+    public void drawPauseScreen(Graphics2D g2, int width, int height) {
+        // Draw semi-transparent black overlay
+        g2.setColor(new Color(0, 0, 0, 150)); // 150/255 alpha for semi-transparency
+        g2.fillRect(0, 0, width, height);
+
+        // Draw "PAUSED" text
+        g2.setFont(new Font("Arial", Font.BOLD, 48));
+        g2.setColor(Color.WHITE);
+        String pausedText = "PAUSED";
+        int textWidth = g2.getFontMetrics().stringWidth(pausedText);
+        int textX = (width - textWidth) / 2;
+        int textY = height / 2 - 50;
+        g2.drawString(pausedText, textX, textY);
+
+        // Position and draw resume button
+        int buttonX = (width - resumeButton.getWidth()) / 2;
+        int buttonY = height / 2 + 50;
+        resumeButton.setX(buttonX);
+        resumeButton.setY(buttonY);
+        resumeButton.draw(g2);
+    }
+
+    /**
      * Handles mouse clicks for UI elements based on the current game state.
      *
      * @param e     the MouseEvent containing click coordinates
@@ -107,7 +147,10 @@ public class UI {
             if (playButton.contains(e.getX(), e.getY())) {
                 playButton.click();
             }
+        } else if (state == GamePanel.GameState.PAUSED) {
+            if (resumeButton.contains(e.getX(), e.getY())) {
+                resumeButton.click();
+            }
         }
     }
-
 }

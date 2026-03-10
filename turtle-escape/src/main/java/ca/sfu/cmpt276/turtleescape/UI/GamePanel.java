@@ -27,7 +27,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     /** Enum representing the different states of the game */
     public enum GameState {
         TITLE,
-        PLAYING
+        PLAYING,
+        PAUSED
     }
 
     /** Current state of the game */
@@ -182,6 +183,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      * Will be extended to update enemies, score, timers, etc.
      */
     public void update() {
+        // Handle pause toggle
+        if (keyH.escapePressed && gameState == GameState.PLAYING) {
+            gameState = GameState.PAUSED;
+            keyH.escapePressed = false;
+        }
+
         if (gameState == GameState.PLAYING) {
             player.update();
             updateIceCreamSpawns();
@@ -261,6 +268,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             ui.drawTitleScreen(g2, getWidth(), getHeight());
         } else if (gameState == GameState.PLAYING) {
             drawGame(g2);
+        } else if (gameState == GameState.PAUSED) {
+            drawGame(g2);
+            ui.drawPauseScreen(g2, getWidth(), getHeight());
         }
 
         g2.dispose();
@@ -283,7 +293,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         player.draw(g2);
 
-        ui.draw(g2);
+        ui.draw(g2, gameState);
     }
 
     // MouseListener methods
