@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -20,7 +22,16 @@ import ca.sfu.cmpt276.turtleescape.tile.TileManager;
  * Extends JPanel to provide a drawable surface within the game window.
  * Implements Runnable to support the game loop running on a separate thread.
  */
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable, MouseListener {
+
+    /** Enum representing the different states of the game */
+    public enum GameState {
+        TITLE,
+        PLAYING
+    }
+
+    /** Current state of the game */
+    public GameState gameState = GameState.TITLE;
 
     /** Target frames per second for the game loop */
     int FPS = 60;
@@ -100,13 +111,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.WHITE);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
+        this.addMouseListener(this);
         this.setFocusable(true);
     }
 
-    /**
-     * Creates and starts the game thread, which triggers the run() method.
-     * Should be called after the game window is made visible.
-     */
     /**
      * Sets up the game by placing all objects on the map.
      * Should be called before starting the game thread.
@@ -115,7 +123,11 @@ public class GamePanel extends JPanel implements Runnable{
         aSetter.setObject();
     }
 
-    public void startGameThread(){
+    /**
+     * Creates and starts the game thread, which triggers the run() method.
+     * Should be called after the game window is made visible.
+     */
+    public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start(); // will call run() method
     }
@@ -123,17 +135,20 @@ public class GamePanel extends JPanel implements Runnable{
     /**
      * The main game loop. Runs continuously while the game thread is active.
      * Caps the frame rate at {@code FPS} by sleeping for the remaining time
-     * in each frame interval. Each iteration updates game state and repaints the screen.
+     * in each frame interval. Each iteration updates game state and repaints the
+     * screen.
      */
     @Override
     public void run() {
 
-        double drawInterval = 1_000_000_000.0/FPS; // 1 60th of a second
+        double drawInterval = 1_000_000_000.0 / FPS; // 1 60th of a second
         double nextDrawTime = System.nanoTime() + drawInterval; // Draw the screen after 1/60th of a second
 
-
-        /** While this gameThread exists it will repeat the process inside of these brackets*/
-        while(gameThread != null){
+        /**
+         * While this gameThread exists it will repeat the process inside of these
+         * brackets
+         */
+        while (gameThread != null) {
 
             long currentTime = System.nanoTime();
 
@@ -143,16 +158,15 @@ public class GamePanel extends JPanel implements Runnable{
             // Update: Redraw screen with new info
             repaint();
 
-
             try {
                 double remainingTime = nextDrawTime - System.nanoTime(); // How much time until nextDrawTime
-                remainingTime = remainingTime/1000000; // convert to milliseconds for sleep method
+                remainingTime = remainingTime / 1000000; // convert to milliseconds for sleep method
 
-                if(remainingTime < 0) {
+                if (remainingTime < 0) {
                     remainingTime = 0; // Just in case it uses more time than drawInterval
                 }
 
-                Thread.sleep((long)remainingTime); // Sleep for remaining time
+                Thread.sleep((long) remainingTime); // Sleep for remaining time
 
                 nextDrawTime += drawInterval; // Add another 1/60th of a second for the loop
 
@@ -167,9 +181,11 @@ public class GamePanel extends JPanel implements Runnable{
      * Calls update on the player to process movement input.
      * Will be extended to update enemies, score, timers, etc.
      */
-    public void update(){
-       player.update();
-       updateIceCreamSpawns();
+    public void update() {
+        if (gameState == GameState.PLAYING) {
+            player.update();
+            updateIceCreamSpawns();
+        }
     }
 
     /**
@@ -178,13 +194,16 @@ public class GamePanel extends JPanel implements Runnable{
      * @param slot the obj array index (4 or 5)
      */
     public void setIceCreamCollected(int slot) {
-        if (slot == 4) iceCream4Collected = true;
-        if (slot == 5) iceCream5Collected = true;
+        if (slot == 4)
+            iceCream4Collected = true;
+        if (slot == 5)
+            iceCream5Collected = true;
     }
 
     /**
      * Handles random spawning and timed despawning of ice cream below kid tiles.
-     * Ice cream appears one tile below each kid, stays for a few seconds, then vanishes.
+     * Ice cream appears one tile below each kid, stays for a few seconds, then
+     * vanishes.
      */
     private void updateIceCreamSpawns() {
         iceCreamSpawnTimer++;
@@ -236,8 +255,23 @@ public class GamePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
 
+        if (gameState == GameState.TITLE) {
+            ui.drawTitleScreen(g2, getWidth(), getHeight());
+        } else if (gameState == GameState.PLAYING) {
+            drawGame(g2);
+        }
+
+        g2.dispose();
+    }
+
+    /**
+     * Draws the main game elements: tiles, objects, player, and UI.
+     *
+     * @param g2 the Graphics2D context used for rendering
+     */
+    private void drawGame(Graphics2D g2) {
         tileM.draw(g2);
 
         // Draw objects (between tiles and player so player walks over them)
@@ -250,7 +284,27 @@ public class GamePanel extends JPanel implements Runnable{
         player.draw(g2);
 
         ui.draw(g2);
+    }
 
-        g2.dispose();
+    // MouseListener methods
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        ui.handleMouseClick(e, gameState);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }
