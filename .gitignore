@@ -5,6 +5,7 @@
 bin/
 out/
 target/
+turtle-escape/target/
 
 # IDE settings
 .idea/
