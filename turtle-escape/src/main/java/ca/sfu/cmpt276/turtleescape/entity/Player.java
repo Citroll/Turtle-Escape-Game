@@ -88,6 +88,10 @@ public class Player extends Entity{
      * pressed direction and alternates the sprite frame every 20 ticks.
      */
     public void update(){
+        int moveSpeed = speed;
+        if((keyH.upPressed || keyH.downPressed) && (keyH.leftPressed || keyH.rightPressed)){
+                moveSpeed = 3;
+            }
         // Only update player moves when keys are pressed
         if(keyH.downPressed || keyH.leftPressed || keyH.upPressed || keyH.rightPressed) {
 
@@ -99,7 +103,7 @@ public class Player extends Entity{
                 int objIndex = gp.cChecker.checkObject(this, true);
                 pickUpObject(objIndex);
                 if(!collisionOn) {
-                    worldY -= speed;
+                    worldY -= moveSpeed;
                 }
             }
             if(keyH.downPressed) {
@@ -109,7 +113,7 @@ public class Player extends Entity{
                 int objIndex = gp.cChecker.checkObject(this, true);
                 pickUpObject(objIndex);
                 if(!collisionOn) {
-                    worldY += speed;
+                    worldY += moveSpeed;
                 }
             }
 
@@ -121,7 +125,7 @@ public class Player extends Entity{
                 int objIndex = gp.cChecker.checkObject(this, true);
                 pickUpObject(objIndex);
                 if(!collisionOn) {
-                    worldX -= speed;
+                    worldX -= moveSpeed;
                 }
             }
             if(keyH.rightPressed) {
@@ -131,7 +135,7 @@ public class Player extends Entity{
                 int objIndex = gp.cChecker.checkObject(this, true);
                 pickUpObject(objIndex);
                 if(!collisionOn) {
-                    worldX += speed;
+                    worldX += moveSpeed;
                 }
             }
 
