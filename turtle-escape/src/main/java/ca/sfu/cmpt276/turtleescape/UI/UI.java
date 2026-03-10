@@ -41,10 +41,12 @@ public class UI {
      * Displays the UI including the time and text for the player's score.
      * Only increments the timer when the game is actively playing.
      *
-     * @param g2    the Graphics2D context used for rendering
-     * @param state the current game state
+     * @param g2     the Graphics2D context used for rendering
+     * @param state  the current game state
+     * @param width  the current width of the panel
+     * @param height the current height of the panel
      */
-    public void draw(Graphics2D g2, GamePanel.GameState state) {
+    public void draw(Graphics2D g2, GamePanel.GameState state, int width, int height) {
         FontRenderContext frc = g2.getFontRenderContext();
         g2.setFont(font);
 
@@ -66,7 +68,9 @@ public class UI {
          * Text settings
          */
         GlyphVector gv = font.createGlyphVector(frc, "Score: " + gp.player.score);
-        Shape textShape = gv.getOutline(gp.tileSize * 10, 40);
+        int scoreWidth = gv.getVisualBounds().getBounds().width;
+        int scoreX = Math.max(20, width - scoreWidth - 20); // Right-aligned with padding
+        Shape textShape = gv.getOutline(scoreX, 40);
         g2.setColor(Color.white);
         g2.fill(textShape);
         // **Outline settings */

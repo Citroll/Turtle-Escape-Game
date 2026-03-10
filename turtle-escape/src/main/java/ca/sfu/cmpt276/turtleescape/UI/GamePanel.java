@@ -293,7 +293,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         player.draw(g2);
 
-        ui.draw(g2, gameState);
+        ui.draw(g2, gameState, getWidth(), getHeight());
     }
 
     // MouseListener methods
