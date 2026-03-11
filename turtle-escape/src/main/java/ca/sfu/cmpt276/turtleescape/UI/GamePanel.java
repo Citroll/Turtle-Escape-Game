@@ -9,9 +9,10 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-import ca.sfu.cmpt276.turtleescape.entity.Player;
-import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
+import ca.sfu.cmpt276.turtleescape.entity.Player;
+import ca.sfu.cmpt276.turtleescape.events.EventHandler;
+import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.object.AssetSetter;
 import ca.sfu.cmpt276.turtleescape.object.OBJ_IceCream;
 import ca.sfu.cmpt276.turtleescape.object.SuperObject;
@@ -28,6 +29,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public enum GameState {
         TITLE,
         PLAYING,
+        PUNISHED,
         PAUSED
     }
 
@@ -77,7 +79,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     /** UI for managing score and time display */
     public UI ui = new UI(this);
-
+    
+    /** Collision checker for player collisions */
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     /** Array of interactive objects on the map (rewards, items). Max 10 at once. */
@@ -85,6 +88,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     /** Handles placing objects onto the map */
     public AssetSetter aSetter = new AssetSetter(this);
+
+    /** Event handler for punishments*/
+    public EventHandler eHandler = new EventHandler(this);
 
     // --- Ice cream spawn/despawn config ---
     /** Frames between spawn attempts (~5 seconds at 60fps) */
@@ -271,6 +277,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         } else if (gameState == GameState.PAUSED) {
             drawGame(g2);
             ui.drawPauseScreen(g2, getWidth(), getHeight());
+        } else if (gameState == GameState.PUNISHED){
+            ui.drawRedFlash(g2, getWidth(), getHeight());
         }
 
         g2.dispose();

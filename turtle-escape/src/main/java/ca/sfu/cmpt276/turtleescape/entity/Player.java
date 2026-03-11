@@ -89,6 +89,8 @@ public class Player extends Entity{
      */
     public void update(){
         int moveSpeed = speed;
+
+        // Handles diagonal movement to have the same speed as directional
         if((keyH.upPressed || keyH.downPressed) && (keyH.leftPressed || keyH.rightPressed)){
                 moveSpeed = 3;
             }
@@ -138,6 +140,9 @@ public class Player extends Entity{
                     worldX += moveSpeed;
                 }
             }
+            
+            // Handle event for punishment collision
+            gp.eHandler.checkEvent();
 
             // Change the image of the sprite every 15 frames
             spriteCounter++;

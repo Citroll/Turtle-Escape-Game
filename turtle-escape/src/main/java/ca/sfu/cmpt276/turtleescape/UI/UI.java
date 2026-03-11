@@ -23,6 +23,10 @@ public class UI {
     /** The resume button for the pause screen */
     private Button resumeButton;
 
+    /** Damage flash */
+    private int flashTimer = 0;
+    private final int flashDuration = 20;
+
     /**
      * Represents the UI for the game
      * Handles the display settings for the score and timer
@@ -138,6 +142,16 @@ public class UI {
         resumeButton.setX(buttonX);
         resumeButton.setY(buttonY);
         resumeButton.draw(g2);
+    }
+
+    public void drawRedFlash(Graphics2D g2, int width, int height){
+        if(flashTimer > 0){
+            float fade = (float) flashTimer / flashDuration;
+            g2.setColor(new Color(255, 0, 0, (int)(120 * fade)));
+            g2.fillRect(0, 0, width, height);
+            
+            flashTimer--;
+        }
     }
 
     /**

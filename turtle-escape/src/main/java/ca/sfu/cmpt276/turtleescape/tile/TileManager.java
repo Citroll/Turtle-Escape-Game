@@ -1,13 +1,14 @@
 package ca.sfu.cmpt276.turtleescape.tile;
 
-import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import javax.imageio.ImageIO;
+
+import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 
 
 /**
@@ -64,6 +65,10 @@ public class TileManager {
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/kid.png"));
             tile[4].collision = true;
+
+            tile[5] = new Tile();
+            tile[5].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/plastic_bag.png"));
+            tile[5].collision = true;
 
         } catch (IOException e) {
             e.printStackTrace();
