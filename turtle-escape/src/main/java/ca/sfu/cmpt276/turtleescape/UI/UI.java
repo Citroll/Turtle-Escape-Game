@@ -144,12 +144,19 @@ public class UI {
         resumeButton.draw(g2);
     }
 
+    /**
+     * Overlays a red screen that slowly fades away when the player interacts
+     * with a punishment.
+     *
+     * @param g2     the Graphics2D context used for rendering
+     * @param width  the current width of the panel
+     * @param height the current height of the panel
+     */
     public void drawRedFlash(Graphics2D g2, int width, int height){
         if(flashTimer > 0){
             float fade = (float) flashTimer / flashDuration;
             g2.setColor(new Color(255, 0, 0, (int)(120 * fade)));
             g2.fillRect(0, 0, width, height);
-            
             flashTimer--;
         }
     }
@@ -170,5 +177,10 @@ public class UI {
                 resumeButton.click();
             }
         }
+    }
+
+    // redFlash helper
+    public void triggerFlash() {
+        flashTimer = flashDuration;
     }
 }

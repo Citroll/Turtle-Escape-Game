@@ -8,7 +8,9 @@ import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
  */
 public class AssetSetter {
 
-    /** Reference to the game panel for accessing the object array and tile size */
+    /**
+     * Reference to the game panel for accessing the object array and tile size
+     */
     GamePanel gp;
 
     /**
@@ -21,29 +23,39 @@ public class AssetSetter {
     }
 
     /**
-     * Creates and places all objects on the map at their designated grid positions.
-     * Objects are placed by multiplying column/row by tileSize to get world coordinates.
-     * Adjust the positions below to match your map layout.
+     * Creates and places all objects on the map at their designated grid
+     * positions. Objects are placed by multiplying column/row by tileSize to
+     * get world coordinates. Adjust the positions below to match your map
+     * layout.
      */
     public void setObject() {
 
-        // Regular rewards (seaweed) — player must collect all of these to win
-        gp.obj[0] = new OBJ_Seaweed();
-        gp.obj[0].worldX = 20 * gp.tileSize;
-        gp.obj[0].worldY = 8 * gp.tileSize;
-
-        gp.obj[1] = new OBJ_Seaweed();
-        gp.obj[1].worldX = 27 * gp.tileSize;
-        gp.obj[1].worldY = 8 * gp.tileSize;
-
-        gp.obj[2] = new OBJ_Seaweed();
-        gp.obj[2].worldX = 30 * gp.tileSize;
-        gp.obj[2].worldY = 13 * gp.tileSize;
-
-        gp.obj[3] = new OBJ_Seaweed();
-        gp.obj[3].worldX = 22 * gp.tileSize;
-        gp.obj[3].worldY = 16 * gp.tileSize;
+        // Regular rewards (seaweed) — player must collect all of these to win 0-x (x=1)
+        placeSeaweed(25, 8, 0);
+        placeSeaweed(25, 9, 1);
 
         // Slots 4 and 5 reserved for randomly spawning ice cream (below kids)
+
+        // Static punishments (plastic) 4-5
+        placePlasticBag(25, 11, 4);
+        placePlasticBag(25, 12, 5);
+    }
+
+    private void place(SuperObject obj, int col, int row, int slot) {
+        gp.obj[slot] = obj;
+        gp.obj[slot].worldX = col * gp.tileSize;
+        gp.obj[slot].worldY = row * gp.tileSize;
+    }
+
+    private void placeSeaweed(int col, int row, int slot) {
+        gp.obj[slot] = new OBJ_Seaweed();
+        gp.obj[slot].worldX = col * gp.tileSize;
+        gp.obj[slot].worldY = row * gp.tileSize;
+    }
+
+    private void placePlasticBag(int col, int row, int slot) {
+        gp.obj[slot] = new PUN_PlasticBag();
+        gp.obj[slot].worldX = col * gp.tileSize;
+        gp.obj[slot].worldY = row * gp.tileSize;
     }
 }

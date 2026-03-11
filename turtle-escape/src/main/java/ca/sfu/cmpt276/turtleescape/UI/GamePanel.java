@@ -11,10 +11,9 @@ import javax.swing.JPanel;
 
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
 import ca.sfu.cmpt276.turtleescape.entity.Player;
-import ca.sfu.cmpt276.turtleescape.events.EventHandler;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.object.AssetSetter;
-import ca.sfu.cmpt276.turtleescape.object.OBJ_IceCream;
+import ca.sfu.cmpt276.turtleescape.object.IceCreamManager;
 import ca.sfu.cmpt276.turtleescape.object.SuperObject;
 import ca.sfu.cmpt276.turtleescape.tile.TileManager;
 
@@ -25,7 +24,9 @@ import ca.sfu.cmpt276.turtleescape.tile.TileManager;
  */
 public class GamePanel extends JPanel implements Runnable, MouseListener {
 
-    /** Enum representing the different states of the game */
+    /**
+     * Enum representing the different states of the game
+     */
     public enum GameState {
         TITLE,
         PLAYING,
@@ -33,31 +34,49 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         PAUSED
     }
 
-    /** Current state of the game */
+    /**
+     * Current state of the game
+     */
     public GameState gameState = GameState.TITLE;
 
-    /** Target frames per second for the game loop */
+    /**
+     * Target frames per second for the game loop
+     */
     int FPS = 60;
 
-    /** The base tile size in pixels before scaling */
+    /**
+     * The base tile size in pixels before scaling
+     */
     final int originalTileSize = 16;
 
-    /** Scale factor applied to the original tile size */
+    /**
+     * Scale factor applied to the original tile size
+     */
     final int scale = 3;
 
-    /** The actual tile size after scaling (48x48 pixels) */
+    /**
+     * The actual tile size after scaling (48x48 pixels)
+     */
     public final int tileSize = originalTileSize * scale;
 
-    /** Number of tile columns on screen */
+    /**
+     * Number of tile columns on screen
+     */
     public final int maxScreenCol = 16;
 
-    /** Number of tile rows on screen */
+    /**
+     * Number of tile rows on screen
+     */
     public final int maxScreenRow = 12;
 
-    /** Total screen width in pixels */
+    /**
+     * Total screen width in pixels
+     */
     public final int screenWidth = tileSize * maxScreenCol;
 
-    /** Total screen height in pixels */
+    /**
+     * Total screen height in pixels
+     */
     public final int screenHeight = tileSize * maxScreenRow;
 
     public final int maxWorldCol = 64;
@@ -65,53 +84,56 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
-    /** The thread that runs the game loop. Starting it calls run() automatically */
+    /**
+     * The thread that runs the game loop. Starting it calls run() automatically
+     */
     Thread gameThread;
 
-    /** Handles keyboard input from the player */
+    /**
+     * Handles keyboard input from the player
+     */
     KeyHandler keyH = new KeyHandler();
 
-    /** The player-controlled turtle entity */
+    /**
+     * The player-controlled turtle entity
+     */
     public Player player = new Player(this, keyH);
 
-    /** Manages loading and rendering of all map tiles */
+    /**
+     * Manages loading and rendering of all map tiles
+     */
     public TileManager tileM = new TileManager(this);
 
-    /** UI for managing score and time display */
+    /**
+     * UI for managing score and time display
+     */
     public UI ui = new UI(this);
-    
-    /** Collision checker for player collisions */
-    public CollisionChecker cChecker = new CollisionChecker(this);
-
-    /** Array of interactive objects on the map (rewards, items). Max 10 at once. */
-    public SuperObject[] obj = new SuperObject[10];
-
-    /** Handles placing objects onto the map */
-    public AssetSetter aSetter = new AssetSetter(this);
-
-    /** Event handler for punishments*/
-    public EventHandler eHandler = new EventHandler(this);
-
-    // --- Ice cream spawn/despawn config ---
-    /** Frames between spawn attempts (~5 seconds at 60fps) */
-    private static final int ICE_CREAM_SPAWN_INTERVAL = 300;
-    /** How many frames ice cream stays before vanishing (~3 seconds) */
-    private static final int ICE_CREAM_LIFETIME = 180;
-    /** Frame counter for spawn timing */
-    private int iceCreamSpawnTimer = 0;
-    /** Remaining lifetime for ice cream slot 4 (kid at col24/row5) */
-    private int iceCreamLife4 = 0;
-    /** Remaining lifetime for ice cream slot 5 (kid at col28/row14) */
-    private int iceCreamLife5 = 0;
-    /** True once ice cream 4 has been collected — won't respawn */
-    private boolean iceCream4Collected = false;
-    /** True once ice cream 5 has been collected — won't respawn */
-    private boolean iceCream5Collected = false;
 
     /**
-     * Constructs the GamePanel and initializes display settings.
-     * Sets preferred size, background color, enables double buffering,
-     * and registers the key listener for input.
+     * Collision checker for player collisions
+     */
+    public CollisionChecker cChecker = new CollisionChecker(this);
+
+    /**
+     * Array of interactive objects on the map (rewards, items). Max 10 at once.
+     */
+    public SuperObject[] obj = new SuperObject[50];
+
+    /**
+     * Handles placing objects onto the map
+     */
+    public AssetSetter aSetter = new AssetSetter(this);
+
+    /**
+     *  Ice cream manager
+     */
+
+    public IceCreamManager iceCreamManager = new IceCreamManager(this);
+
+    /**
+     * Constructs the GamePanel and initializes display settings. Sets preferred
+     * size, background color, enables double buffering, and registers the key
+     * listener for input.
      */
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -123,8 +145,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     /**
-     * Sets up the game by placing all objects on the map.
-     * Should be called before starting the game thread.
+     * Sets up the game by placing all objects on the map. Should be called
+     * before starting the game thread.
      */
     public void setupGame() {
         aSetter.setObject();
@@ -141,8 +163,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     /**
      * The main game loop. Runs continuously while the game thread is active.
-     * Caps the frame rate at {@code FPS} by sleeping for the remaining time
-     * in each frame interval. Each iteration updates game state and repaints the
+     * Caps the frame rate at {@code FPS} by sleeping for the remaining time in
+     * each frame interval. Each iteration updates game state and repaints the
      * screen.
      */
     @Override
@@ -152,8 +174,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         double nextDrawTime = System.nanoTime() + drawInterval; // Draw the screen after 1/60th of a second
 
         /**
-         * While this gameThread exists it will repeat the process inside of these
-         * brackets
+         * While this gameThread exists it will repeat the process inside of
+         * these brackets
          */
         while (gameThread != null) {
 
@@ -184,83 +206,34 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     /**
-     * Updates the game state for the current frame.
-     * Calls update on the player to process movement input.
-     * Will be extended to update enemies, score, timers, etc.
+     * Updates the game state for the current frame. Calls update on the player
+     * to process movement input. Will be extended to update enemies, score,
+     * timers, etc.
      */
     public void update() {
-        // Handle pause toggle
         if (keyH.escapePressed && gameState == GameState.PLAYING) {
             gameState = GameState.PAUSED;
             keyH.escapePressed = false;
         }
-
-        if (gameState == GameState.PLAYING) {
+    
+        if (gameState == GameState.PLAYING || gameState == GameState.PUNISHED) {
             player.update();
-            updateIceCreamSpawns();
+            iceCreamManager.update();
         }
     }
 
     /**
      * Marks an ice cream slot as permanently collected so it won't respawn.
      *
-     * @param slot the obj array index (4 or 5)
+     * @param slot the obj array index
      */
     public void setIceCreamCollected(int slot) {
-        if (slot == 4)
-            iceCream4Collected = true;
-        if (slot == 5)
-            iceCream5Collected = true;
+        iceCreamManager.setCollected(slot);
     }
 
     /**
-     * Handles random spawning and timed despawning of ice cream below kid tiles.
-     * Ice cream appears one tile below each kid, stays for a few seconds, then
-     * vanishes.
-     */
-    private void updateIceCreamSpawns() {
-        iceCreamSpawnTimer++;
-
-        // Try to spawn ice cream every SPAWN_INTERVAL frames
-        if (iceCreamSpawnTimer >= ICE_CREAM_SPAWN_INTERVAL) {
-            iceCreamSpawnTimer = 0;
-
-            // 50% chance to spawn below kid 1 (col 24, row 5 → ice cream at row 6)
-            if (obj[4] == null && !iceCream4Collected && Math.random() < 0.5) {
-                obj[4] = new OBJ_IceCream();
-                obj[4].worldX = 24 * tileSize;
-                obj[4].worldY = 6 * tileSize;
-                iceCreamLife4 = ICE_CREAM_LIFETIME;
-            }
-
-            // 50% chance to spawn below kid 2 (col 28, row 14 → ice cream at row 15)
-            if (obj[5] == null && !iceCream5Collected && Math.random() < 0.5) {
-                obj[5] = new OBJ_IceCream();
-                obj[5].worldX = 28 * tileSize;
-                obj[5].worldY = 15 * tileSize;
-                iceCreamLife5 = ICE_CREAM_LIFETIME;
-            }
-        }
-
-        // Count down and despawn if time runs out
-        if (obj[4] != null) {
-            iceCreamLife4--;
-            if (iceCreamLife4 <= 0) {
-                obj[4] = null;
-            }
-        }
-        if (obj[5] != null) {
-            iceCreamLife5--;
-            if (iceCreamLife5 <= 0) {
-                obj[5] = null;
-            }
-        }
-    }
-
-    /**
-     * Renders all game elements to the screen.
-     * Draws the tile map first, then the player on top.
-     * Called automatically by repaint() each frame.
+     * Renders all game elements to the screen. Draws the tile map first, then
+     * the player on top. Called automatically by repaint() each frame.
      *
      * @param g the Graphics context provided by Swing
      */
@@ -272,13 +245,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         if (gameState == GameState.TITLE) {
             ui.drawTitleScreen(g2, getWidth(), getHeight());
-        } else if (gameState == GameState.PLAYING) {
+        } else if (gameState == GameState.PLAYING || gameState == GameState.PUNISHED) {
             drawGame(g2);
+            ui.drawRedFlash(g2, getWidth(), getHeight());
         } else if (gameState == GameState.PAUSED) {
             drawGame(g2);
             ui.drawPauseScreen(g2, getWidth(), getHeight());
-        } else if (gameState == GameState.PUNISHED){
-            ui.drawRedFlash(g2, getWidth(), getHeight());
         }
 
         g2.dispose();

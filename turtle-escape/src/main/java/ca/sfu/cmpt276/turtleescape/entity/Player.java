@@ -9,20 +9,24 @@ import javax.imageio.ImageIO;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
-
+import ca.sfu.cmpt276.turtleescape.object.SuperObject;
+import ca.sfu.cmpt276.turtleescape.object.SuperPunishment;
 
 /**
- * Represents the player-controlled baby sea turtle.
- * Handles player movement, sprite animation, and rendering.
- * Extends Entity to inherit common position, speed, and sprite properties.
+ * Represents the player-controlled baby sea turtle. Handles player movement,
+ * sprite animation, and rendering. Extends Entity to inherit common position,
+ * speed, and sprite properties.
  */
-public class Player extends Entity{
+public class Player extends Entity {
 
-
-    /** Reference to the game panel for accessing screen/tile dimensions */
+    /**
+     * Reference to the game panel for accessing screen/tile dimensions
+     */
     GamePanel gp;
 
-    /** Reference to the key handler for reading keyboard input */
+    /**
+     * Reference to the key handler for reading keyboard input
+     */
     KeyHandler keyH;
 
     public final int screenX;
@@ -34,10 +38,10 @@ public class Player extends Entity{
      * Constructs a Player with references to the game panel and key handler.
      * Sets default values and loads player sprite images.
      *
-     * @param gp   the GamePanel this player belongs to
+     * @param gp the GamePanel this player belongs to
      * @param keyH the KeyHandler used to read keyboard input
      */
-    public Player(GamePanel gp, KeyHandler keyH){
+    public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
         this.score = 0;
@@ -48,7 +52,6 @@ public class Player extends Entity{
         setDefaultValues();
         getPlayerImage();
     }
-
 
     /**
      * Sets the player's default starting position, speed, and direction.
@@ -67,7 +70,7 @@ public class Player extends Entity{
      * Loads all directional sprite images for the player turtle from resources.
      * Each direction has two frames (1 and 2) to create a walking animation.
      */
-    public void getPlayerImage(){
+    public void getPlayerImage() {
         try {
             up1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleUp.png"));
             up2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleUp2.png"));
@@ -83,73 +86,70 @@ public class Player extends Entity{
     }
 
     /**
-     * Updates the player's position and animation frame based on keyboard input.
-     * Called once per game tick. Moves the player by {@code speed} pixels in the
-     * pressed direction and alternates the sprite frame every 20 ticks.
+     * Updates the player's position and animation frame based on keyboard
+     * input. Called once per game tick. Moves the player by {@code speed}
+     * pixels in the pressed direction and alternates the sprite frame every 20
+     * ticks.
      */
-    public void update(){
+    public void update() {
         int moveSpeed = speed;
 
         // Handles diagonal movement to have the same speed as directional
-        if((keyH.upPressed || keyH.downPressed) && (keyH.leftPressed || keyH.rightPressed)){
-                moveSpeed = 3;
-            }
+        if ((keyH.upPressed || keyH.downPressed) && (keyH.leftPressed || keyH.rightPressed)) {
+            moveSpeed = 3;
+        }
         // Only update player moves when keys are pressed
-        if(keyH.downPressed || keyH.leftPressed || keyH.upPressed || keyH.rightPressed) {
-
+        if (keyH.downPressed || keyH.leftPressed || keyH.upPressed || keyH.rightPressed) {
             // Handle vertical movement (up/down)
-            if(keyH.upPressed) {
+            if (keyH.upPressed) {
                 direction = "up";
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 int objIndex = gp.cChecker.checkObject(this, true);
                 pickUpObject(objIndex);
-                if(!collisionOn) {
+                if (!collisionOn) {
                     worldY -= moveSpeed;
                 }
             }
-            if(keyH.downPressed) {
+            if (keyH.downPressed) {
                 direction = "down";
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 int objIndex = gp.cChecker.checkObject(this, true);
                 pickUpObject(objIndex);
-                if(!collisionOn) {
+                if (!collisionOn) {
                     worldY += moveSpeed;
                 }
             }
 
             // Handle horizontal movement (left/right)
-            if(keyH.leftPressed) {
+            if (keyH.leftPressed) {
                 direction = "left";
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 int objIndex = gp.cChecker.checkObject(this, true);
                 pickUpObject(objIndex);
-                if(!collisionOn) {
+                if (!collisionOn) {
                     worldX -= moveSpeed;
                 }
             }
-            if(keyH.rightPressed) {
+            if (keyH.rightPressed) {
                 direction = "right";
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 int objIndex = gp.cChecker.checkObject(this, true);
                 pickUpObject(objIndex);
-                if(!collisionOn) {
+                if (!collisionOn) {
                     worldX += moveSpeed;
                 }
             }
-            
-            // Handle event for punishment collision
-            gp.eHandler.checkEvent();
 
             // Change the image of the sprite every 15 frames
             spriteCounter++;
-            if(spriteCounter > 15) {
-                if(spriteNum == 1){
+            if (spriteCounter > 15) {
+                if (spriteNum == 1) {
                     spriteNum = 2;
-                } else if (spriteNum == 2){
+                } else if (spriteNum == 2) {
                     spriteNum = 1;
                 }
                 spriteCounter = 0;
@@ -157,28 +157,35 @@ public class Player extends Entity{
         }
     }
 
-
     /**
-     * Handles picking up an object when the player touches it.
-     * Removes the object from the map and updates the score.
+     * Handles picking up an object when the player touches it. Removes the
+     * object from the map and updates the score.
      *
      * @param index the index of the object in the obj array, or 999 if none
      */
     public void pickUpObject(int index) {
         if (index != 999) {
-            String objectName = gp.obj[index].name;
+            SuperObject obj = gp.obj[index];
 
-            switch (objectName) {
-                case "Seaweed":
-                    score += 100;
-                    gp.obj[index] = null;
-                    break;
-                case "IceCream":
-                    score += 250;
-                    if (index == 4) { gp.setIceCreamCollected(4); }
-                    if (index == 5) { gp.setIceCreamCollected(5); }
-                    gp.obj[index] = null;
-                    break;
+            if (obj instanceof SuperPunishment) {
+                ((SuperPunishment) obj).applyPunishment(gp);
+            } else {
+                switch (obj.name) {
+                    case "Seaweed":
+                        score += 100;
+                        gp.obj[index] = null;
+                        break;
+                    case "IceCream":
+                        score += 250;
+                        if (index == 4) {
+                            gp.setIceCreamCollected(4);
+                        }
+                        if (index == 5) {
+                            gp.setIceCreamCollected(5);
+                        }
+                        gp.obj[index] = null;
+                        break;
+                }
             }
         }
     }
@@ -194,7 +201,7 @@ public class Player extends Entity{
 
         switch (direction) {
             case "up":
-                if (spriteNum == 1){
+                if (spriteNum == 1) {
                     image = up1;
                 }
                 if (spriteNum == 2) {
@@ -202,7 +209,7 @@ public class Player extends Entity{
                 }
                 break;
             case "down":
-                if (spriteNum == 1){
+                if (spriteNum == 1) {
                     image = down1;
                 }
                 if (spriteNum == 2) {
@@ -210,7 +217,7 @@ public class Player extends Entity{
                 }
                 break;
             case "left":
-                if (spriteNum == 1){
+                if (spriteNum == 1) {
                     image = left1;
                 }
                 if (spriteNum == 2) {
@@ -218,7 +225,7 @@ public class Player extends Entity{
                 }
                 break;
             case "right":
-                if (spriteNum == 1){
+                if (spriteNum == 1) {
                     image = right1;
                 }
                 if (spriteNum == 2) {
