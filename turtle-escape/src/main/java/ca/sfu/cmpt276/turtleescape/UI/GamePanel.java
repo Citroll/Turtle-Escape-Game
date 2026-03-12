@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
+import ca.sfu.cmpt276.turtleescape.Sound;
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
 import ca.sfu.cmpt276.turtleescape.entity.Entity;
 import ca.sfu.cmpt276.turtleescape.entity.Player;
@@ -16,8 +17,7 @@ import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.object.AssetSetter;
 import ca.sfu.cmpt276.turtleescape.object.IceCreamManager;
 import ca.sfu.cmpt276.turtleescape.object.SuperObject;
-import ca.sfu.cmpt276.turtleescape.tile.TileManager;
-import ca.sfu.cmpt276.turtleescape.Sound; 
+import ca.sfu.cmpt276.turtleescape.tile.TileManager; 
 
 /**
  * Represents the main game panel where all game rendering and logic occurs.
@@ -247,6 +247,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             }
 
             iceCreamManager.update();
+            tileM.update();
         }
     }
 

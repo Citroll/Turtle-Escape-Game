@@ -1,7 +1,6 @@
 package ca.sfu.cmpt276.turtleescape.tile;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +28,10 @@ public class TileManager {
     /** 2D array storing the tile number for each cell in the map grid */
     public int[][] mapTileNum;
 
+    /** Frame counter for water animations */
+    private int animationCounter = 0;
+    private int animationFrame = 0;
+
     /**
      * Constructs the TileManager, loads tile images, and loads the map layout.
      *
@@ -37,7 +40,7 @@ public class TileManager {
     public TileManager(GamePanel gp) {
         this.gp = gp;
 
-        tile = new Tile[8];
+        tile = new Tile[50];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
@@ -45,15 +48,36 @@ public class TileManager {
     }
 
     /**
+     * Updates water animation tile every 30 ticks
+     */
+    public void update(){
+        animationCounter++;
+        if(animationCounter >= 30){
+            animationFrame++;
+            if(animationFrame > 1){
+                animationFrame = 0;
+            }
+            animationCounter = 0;   
+        }
+    }
+
+    /**
      * Loads tile images from the resources folder and assigns them to tile slots.
      * Tile 0 = sand, Tile 1 = water, Tile 2 = castle (barrier).
      */
     public void getTileImage() {
+        //SAND 0-1 SAND, SAND+WATER EDGE
         setUp(0, "tiles/sand", false);
-        setUp(1, "tiles/water", false);
-        setUp(2, "tiles/castle", true);
-        setUp(3, "tiles/tree", true);
-        setUp(4, "enemies/kid", true);
+
+        //WATER 2-5 WATER, WATER_2, WATER+DEEP_WATER, DEEP_WATER_2
+        setUp(2, "tiles/water", false);
+        setUp(3, "tiles/water_2", false);
+        //SANDCASTLE 6
+        setUp(6, "tiles/castle", true);
+        //TREE 7
+        setUp(7, "tiles/tree", true);
+        //KID 8
+        setUp(8, "enemies/kid", true);
     }
 
 
@@ -131,6 +155,8 @@ public class TileManager {
         while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow){
 
             int tileNum = mapTileNum[worldCol][worldRow];
+
+            if(tileNum == 2 && animationFrame == 1) tileNum = 3;
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
