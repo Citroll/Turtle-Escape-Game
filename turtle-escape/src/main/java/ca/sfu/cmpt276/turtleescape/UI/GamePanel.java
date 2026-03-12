@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
+import ca.sfu.cmpt276.turtleescape.entity.Entity;
 import ca.sfu.cmpt276.turtleescape.entity.Player;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.object.AssetSetter;
@@ -118,7 +119,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     /**
      * Array of interactive objects on the map (rewards, items). Max 10 at once.
      */
-    public SuperObject[] obj = new SuperObject[50];
+    public SuperObject[] obj = new SuperObject[10];
+
+    public Entity enemy[] = new Entity[20];
 
     /**
      * Handles placing objects onto the map
@@ -166,6 +169,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      */
     public void setupGame() {
         aSetter.setObject();
+        aSetter.setMonster();
         playMusic(0);
     }
 
@@ -235,6 +239,13 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     
         if (gameState == GameState.PLAYING || gameState == GameState.PUNISHED) {
             player.update();
+
+            for (int i = 0; i < enemy.length; i++) {
+                if(enemy[i] != null){
+                    enemy[i].update();
+                }
+            }
+
             iceCreamManager.update();
         }
     }
@@ -285,6 +296,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         for (int i = 0; i < obj.length; i++) {
             if (obj[i] != null) {
                 obj[i].draw(g2, this);
+            }
+        }
+
+        for (int i = 0; i < enemy.length; i++) {
+            if (enemy[i] != null) {
+                enemy[i].draw(g2);
             }
         }
 

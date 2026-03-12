@@ -1,14 +1,12 @@
 package ca.sfu.cmpt276.turtleescape.entity;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
-import ca.sfu.cmpt276.turtleescape.UtilityTool;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.object.SuperObject;
 import ca.sfu.cmpt276.turtleescape.object.SuperPunishment;
@@ -108,6 +106,8 @@ public class Player extends Entity {
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 int objIndex = gp.cChecker.checkObject(this, true);
+                int enemyIndex = gp.cChecker.checkEntity(this, gp.enemy);
+                contactEnemy(enemyIndex);
                 pickUpObject(objIndex);
                 if (!collisionOn) {
                     worldY -= moveSpeed;
@@ -118,6 +118,8 @@ public class Player extends Entity {
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 int objIndex = gp.cChecker.checkObject(this, true);
+                int enemyIndex = gp.cChecker.checkEntity(this, gp.enemy);
+                contactEnemy(enemyIndex);
                 pickUpObject(objIndex);
                 if (!collisionOn) {
                     worldY += moveSpeed;
@@ -130,6 +132,8 @@ public class Player extends Entity {
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 int objIndex = gp.cChecker.checkObject(this, true);
+                int enemyIndex = gp.cChecker.checkEntity(this, gp.enemy);
+                contactEnemy(enemyIndex);
                 pickUpObject(objIndex);
                 if (!collisionOn) {
                     worldX -= moveSpeed;
@@ -140,6 +144,8 @@ public class Player extends Entity {
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 int objIndex = gp.cChecker.checkObject(this, true);
+                int enemyIndex = gp.cChecker.checkEntity(this, gp.enemy);
+                contactEnemy(enemyIndex);
                 pickUpObject(objIndex);
                 if (!collisionOn) {
                     worldX += moveSpeed;
@@ -177,6 +183,25 @@ public class Player extends Entity {
                 gp.stopMoveSE();
                 moveSoundPlaying = false;
                 currentMoveSoundIndex = -1;
+            }
+        }
+
+        if(invincible == true){
+            invincibleCounter++;
+            if(invincibleCounter > 60){
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+    }
+
+
+    public void contactEnemy(int i){
+        if(i != 999){
+            if(invincible == false) {
+                gp.player.score -= 100;
+                gp.ui.triggerFlash();
+                invincible = true;
             }
         }
     }
@@ -260,6 +285,13 @@ public class Player extends Entity {
                 break;
         }
 
+        if(invincible == true){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         g2.drawImage(image, screenX, screenY, null);
+
+        // Reset Alpha
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 }
