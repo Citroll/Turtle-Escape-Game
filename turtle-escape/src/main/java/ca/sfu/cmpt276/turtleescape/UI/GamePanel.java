@@ -16,6 +16,7 @@ import ca.sfu.cmpt276.turtleescape.object.AssetSetter;
 import ca.sfu.cmpt276.turtleescape.object.IceCreamManager;
 import ca.sfu.cmpt276.turtleescape.object.SuperObject;
 import ca.sfu.cmpt276.turtleescape.tile.TileManager;
+import ca.sfu.cmpt276.turtleescape.Sound; 
 
 /**
  * Represents the main game panel where all game rendering and logic occurs.
@@ -129,6 +130,21 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      */
 
     public IceCreamManager iceCreamManager = new IceCreamManager(this);
+     
+    /**
+     * instance for bg music
+     */
+    Sound music = new Sound();
+    
+    /**
+     * sound effect instance (one shots)
+     */
+    Sound se = new Sound();
+
+    /**
+     * move sound effect
+     */
+    Sound moveSE = new Sound();
 
     /**
      * Constructs the GamePanel and initializes display settings. Sets preferred
@@ -150,6 +166,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      */
     public void setupGame() {
         aSetter.setObject();
+        playMusic(0);
     }
 
     /**
@@ -296,5 +313,52 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    /**
+     * plays background music from the sound url array and loops it continuously.
+     *
+     * @param i the index of the music track in the sound url array
+     */
+    public void playMusic(int i) {
+        music.setFile(i);
+        music.play();
+        music.loop();
+        music.setVolume(0.72f);
+    }
+
+    /**
+     * stops the currently playing background music.
+     */
+    public void stopMusic() {
+        music.stop();
+    }
+
+    /**
+     * plays a one-shot sound effect from the sound url array.
+     *
+     * @param i the index of the sound effect in the sound url array
+     */
+    public void playSE(int i) {
+        se.setFile(i);
+        se.play();
+    }
+
+    /**
+     * plays a looping movement sound effect (walk/swim) from the sound url array.
+     *
+     * @param i the index of the movement sound in the sound url array
+     */
+    public void playMoveSE(int i) {
+        moveSE.setFile(i);
+        moveSE.play();
+        moveSE.loop();
+    }
+
+    /**
+     * stops the currently looping movement sound effect.
+     */
+    public void stopMoveSE() {
+        moveSE.stop();
     }
 }

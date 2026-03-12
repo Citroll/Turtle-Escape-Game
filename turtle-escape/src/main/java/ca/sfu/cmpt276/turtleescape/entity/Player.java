@@ -34,6 +34,12 @@ public class Player extends Entity {
 
     public int score;
 
+    /** whether a movement sound (walk/swim) is currently looping */
+    boolean moveSoundPlaying = false;
+
+    /** the sound url index of the currently playing movement sound, or -1 if none */
+    int currentMoveSoundIndex = -1;
+
     /**
      * Constructs a Player with references to the game panel and key handler.
      * Sets default values and loads player sprite images.
@@ -154,6 +160,28 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
+
+            // calculate current tile and pick movement sound to play 
+            int col = (worldX + gp.tileSize / 2) / gp.tileSize;
+            int row = (worldY + gp.tileSize / 2) / gp.tileSize;
+            int tileNum = gp.tileM.mapTileNum[col][row];
+            int soundIndex = (tileNum == 0) ? 2 : 3; // water=3, sand=2
+
+            // Start or switch the looping move sound
+            if (!moveSoundPlaying || currentMoveSoundIndex != soundIndex) {
+                gp.stopMoveSE();
+                gp.playMoveSE(soundIndex);
+                moveSoundPlaying = true;
+                currentMoveSoundIndex = soundIndex;
+            }
+
+        } else {
+            // No keys pressed stop move sound
+            if (moveSoundPlaying) {
+                gp.stopMoveSE();
+                moveSoundPlaying = false;
+                currentMoveSoundIndex = -1;
+            }
         }
     }
 
@@ -174,16 +202,18 @@ public class Player extends Entity {
                     case "Seaweed":
                         score += 100;
                         gp.obj[index] = null;
+                        gp.playSE(1);
                         break;
                     case "IceCream":
                         score += 250;
-                        if (index == 4) {
-                            gp.setIceCreamCollected(4);
+                        if (index == 2) {
+                            gp.setIceCreamCollected(2);
                         }
-                        if (index == 5) {
-                            gp.setIceCreamCollected(5);
+                        if (index == 3) {
+                            gp.setIceCreamCollected(3);
                         }
                         gp.obj[index] = null;
+                        gp.playSE(1);
                         break;
                 }
             }
