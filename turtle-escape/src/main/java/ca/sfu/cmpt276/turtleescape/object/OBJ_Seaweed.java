@@ -1,5 +1,7 @@
 package ca.sfu.cmpt276.turtleescape.object;
 
+import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
@@ -9,13 +11,19 @@ import java.io.IOException;
  */
 public class OBJ_Seaweed extends SuperObject {
 
+    GamePanel gp;
     /**
      * Constructs a Seaweed reward and loads its sprite image.
      */
-    public OBJ_Seaweed() {
+    public OBJ_Seaweed(GamePanel gp) {
+
+        this.gp = gp;
+
         name = "Seaweed";
         try {
             image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/seaweed.png"));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

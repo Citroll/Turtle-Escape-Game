@@ -1,5 +1,7 @@
 package ca.sfu.cmpt276.turtleescape.entity;
 
+import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -8,6 +10,8 @@ import java.awt.image.BufferedImage;
  * Stores common properties such as position, speed, direction, and sprite images.
  */
 public class Entity {
+
+    GamePanel gp;
 
     /** The x-coordinate of the entity on the screen in pixels */
     public int worldX, worldY;
@@ -27,9 +31,13 @@ public class Entity {
     /** The current sprite frame number (1 or 2) used for walking animation */
     public int spriteNum = 1;
 
-    public Rectangle solidArea;
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 
     public int solidAreaDefaultX, solidAreaDefaultY;
 
     public boolean collisionOn = false;
+
+    public Entity(GamePanel gp) {
+        this.gp = gp;
+    }
 }

@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+import ca.sfu.cmpt276.turtleescape.UtilityTool;
 
 /**
  * Base class for all interactive objects placed on the game map.
@@ -37,6 +38,8 @@ public class SuperObject {
     /** Default y offset of the solid area */
     public int solidAreaDefaultY = 0;
 
+    UtilityTool uTool = new UtilityTool();
+
     /**
      * Draws this object on the screen, offset by the player's camera position.
      * Only draws if the object is within the visible screen area.
@@ -55,7 +58,7 @@ public class SuperObject {
             worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
             worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
 
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, screenX, screenY, null);
         }
     }
 }

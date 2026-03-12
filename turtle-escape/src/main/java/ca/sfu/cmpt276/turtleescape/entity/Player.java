@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+import ca.sfu.cmpt276.turtleescape.UtilityTool;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.object.SuperObject;
 import ca.sfu.cmpt276.turtleescape.object.SuperPunishment;
@@ -18,11 +19,6 @@ import ca.sfu.cmpt276.turtleescape.object.SuperPunishment;
  * speed, and sprite properties.
  */
 public class Player extends Entity {
-
-    /**
-     * Reference to the game panel for accessing screen/tile dimensions
-     */
-    GamePanel gp;
 
     /**
      * Reference to the key handler for reading keyboard input
@@ -42,7 +38,9 @@ public class Player extends Entity {
      * @param keyH the KeyHandler used to read keyboard input
      */
     public Player(GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+
+        super(gp);
+
         this.keyH = keyH;
         this.score = 0;
 
@@ -71,18 +69,29 @@ public class Player extends Entity {
      * Each direction has two frames (1 and 2) to create a walking animation.
      */
     public void getPlayerImage() {
+        up1 = setUp("TurtleUp");
+        up2 = setUp("TurtleUp2");
+        down1 = setUp("TurtleDown");
+        down2 = setUp("TurtleDown2");
+        left1 = setUp("TurtleLeft");
+        left2 = setUp("TurtleLeft2");
+        right1 = setUp("TurtleRight");
+        right2 = setUp("TurtleRight2");
+    }
+
+
+    public BufferedImage setUp(String imagePath) {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
         try {
-            up1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleUp.png"));
-            up2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleUp2.png"));
-            down1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleDown.png"));
-            down2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleDown2.png"));
-            left1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleLeft.png"));
-            left2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleLeft2.png"));
-            right1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleRight.png"));
-            right2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/TurtleRight2.png"));
+            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/" + imagePath + ".png"));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return image;
     }
 
     /**
@@ -234,6 +243,6 @@ public class Player extends Entity {
                 break;
         }
 
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, null);
     }
 }
