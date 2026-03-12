@@ -62,7 +62,7 @@ public class IceCreamManager {
      * @param slot the index in the obj array to place the ice cream
      */
     private void placeIceCream(int col, int row, int slot) {
-        gp.obj[slot] = new OBJ_IceCream();
+        gp.obj[slot] = new OBJ_IceCream(gp);
         gp.obj[slot].worldX = col * gp.tileSize;
         gp.obj[slot].worldY = row * gp.tileSize;
     }

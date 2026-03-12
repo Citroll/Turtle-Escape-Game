@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.turtleescape.tile;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,7 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+import ca.sfu.cmpt276.turtleescape.UtilityTool;
 
 
 /**
@@ -47,30 +49,26 @@ public class TileManager {
      * Tile 0 = sand, Tile 1 = water, Tile 2 = castle (barrier).
      */
     public void getTileImage() {
+        setUp(0, "tiles/sand", false);
+        setUp(1, "tiles/water", false);
+        setUp(2, "tiles/castle", true);
+        setUp(3, "tiles/tree", true);
+        setUp(4, "enemies/kid", true);
+    }
+
+    public void setUp(int index, String imagePath, boolean collision) {
+        UtilityTool uTool = new UtilityTool();
+
         try {
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/sand.png"));
+            tile[index] = new Tile();
+            tile[index].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(imagePath + ".png"));
+            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+            tile[index].collision = collision;
 
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/water.png"));
-
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/castle.png"));
-            tile[2].collision = true; // add for all barrier tiles
-
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/tree.png"));
-            tile[3].collision = true;
-
-            tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/kid.png"));
-            tile[4].collision = true;
-
-        } catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
-
 
     /**
      * Reads the map layout from a text file and populates the mapTileNum grid.
@@ -131,7 +129,7 @@ public class TileManager {
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
             if (tileNum < tile.length && tile[tileNum] != null && tile[tileNum].image != null) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tile[tileNum].image, screenX, screenY, null);
             }
             worldCol++;
 

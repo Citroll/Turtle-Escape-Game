@@ -48,13 +48,13 @@ public class AssetSetter {
     }
 
     private void placeSeaweed(int col, int row, int slot) {
-        gp.obj[slot] = new OBJ_Seaweed();
+        gp.obj[slot] = new OBJ_Seaweed(gp);
         gp.obj[slot].worldX = col * gp.tileSize;
         gp.obj[slot].worldY = row * gp.tileSize;
     }
 
     private void placePlasticBag(int col, int row, int slot) {
-        gp.obj[slot] = new PUN_PlasticBag();
+        gp.obj[slot] = new PUN_PlasticBag(gp);
         gp.obj[slot].worldX = col * gp.tileSize;
         gp.obj[slot].worldY = row * gp.tileSize;
     }
