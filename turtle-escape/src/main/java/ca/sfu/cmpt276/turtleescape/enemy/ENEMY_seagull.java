@@ -5,9 +5,9 @@ import ca.sfu.cmpt276.turtleescape.entity.Entity;
 
 import java.util.Random;
 
-public class ENEMY_kid extends Entity {
+public class ENEMY_seagull extends Entity {
 
-    public ENEMY_kid(GamePanel gp) {
+    public ENEMY_seagull(GamePanel gp) {
         super(gp);
 
         name = "Little Kid";

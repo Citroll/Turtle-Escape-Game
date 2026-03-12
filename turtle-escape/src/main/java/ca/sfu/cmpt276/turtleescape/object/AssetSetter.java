@@ -1,7 +1,7 @@
 package ca.sfu.cmpt276.turtleescape.object;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
-import ca.sfu.cmpt276.turtleescape.enemy.ENEMY_kid;
+import ca.sfu.cmpt276.turtleescape.enemy.ENEMY_seagull;
 
 /**
  * Handles placing all interactive objects (rewards, items) onto the game map.
@@ -43,12 +43,12 @@ public class AssetSetter {
     }
 
     public void setMonster() {
-        gp.enemy[0] = new ENEMY_kid(gp);
+        gp.enemy[0] = new ENEMY_seagull(gp);
         gp.enemy[0].worldX = gp.tileSize*26;
         gp.enemy[0].worldY = gp.tileSize*9;
 
 
-        gp.enemy[1] = new ENEMY_kid(gp);
+        gp.enemy[1] = new ENEMY_seagull(gp);
         gp.enemy[1].worldX = gp.tileSize*20;
         gp.enemy[1].worldY = gp.tileSize*10;
     }
