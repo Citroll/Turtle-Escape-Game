@@ -56,6 +56,15 @@ public class TileManager {
         setUp(4, "enemies/kid", true);
     }
 
+
+    /**
+     * Loads a single tile image from resources, scales it to the tile size,
+     * and assigns it to the given index in the tile array.
+     *
+     * @param index     the index in the tile array to assign this tile to
+     * @param imagePath the resource path to the tile image (without file extension)
+     * @param collision whether this tile should block entity movement
+     */
     public void setUp(int index, String imagePath, boolean collision) {
         UtilityTool uTool = new UtilityTool();
 

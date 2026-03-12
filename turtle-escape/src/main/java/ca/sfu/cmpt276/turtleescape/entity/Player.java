@@ -65,34 +65,21 @@ public class Player extends Entity {
     }
 
     /**
-     * Loads all directional sprite images for the player turtle from resources.
-     * Each direction has two frames (1 and 2) to create a walking animation.
+     * Loads all 8 directional sprite frames for the player turtle from resources.
+     * Two frames per direction (up, down, left, right) are loaded to support walking animation.
      */
     public void getPlayerImage() {
-        up1 = setUp("TurtleUp");
-        up2 = setUp("TurtleUp2");
-        down1 = setUp("TurtleDown");
-        down2 = setUp("TurtleDown2");
-        left1 = setUp("TurtleLeft");
-        left2 = setUp("TurtleLeft2");
-        right1 = setUp("TurtleRight");
-        right2 = setUp("TurtleRight2");
+        up1 = setUp("player/TurtleUp");
+        up2 = setUp("player/TurtleUp2");
+        down1 = setUp("player/TurtleDown");
+        down2 = setUp("player/TurtleDown2");
+        left1 = setUp("player/TurtleLeft");
+        left2 = setUp("player/TurtleLeft2");
+        right1 = setUp("player/TurtleRight");
+        right2 = setUp("player/TurtleRight2");
     }
 
 
-    public BufferedImage setUp(String imagePath) {
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null;
-
-        try {
-            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/" + imagePath + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return image;
-    }
 
     /**
      * Updates the player's position and animation frame based on keyboard
