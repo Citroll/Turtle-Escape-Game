@@ -69,16 +69,16 @@ public class TileManager {
         //SAND 0-1 SAND, SAND+WATER EDGE
         setUp(0, "tiles/sand", false);
 
-        //WATER 2-5 WATER, WATER_2, WATER+DEEP_WATER, DEEP_WATER_2
+        //WATER 2-9 WATER, WATER_2, WATER+DEEP_WATER, DEEP_WATER_2, WATER_BUOY, DEEP_WATER_BUOY
         setUp(2, "tiles/water1", false);
         setUp(3, "tiles/water2", false);
-        //SANDCASTLE 6
-        setUp(6, "tiles/castle", true);
-        //TREE 7
-        setUp(7, "tiles/tree", true);
-        //KID 8
-        setUp(8, "enemies/kid", true);
-    }
+        setUp(4, "tiles/buoy1", true);
+        setUp(5, "tiles/buoy2", true);
+        //SANDCASTLE 7
+        setUp(7, "tiles/castle", true);
+        //TREE 8
+        setUp(8, "tiles/tree", true);
+        }
 
 
     /**
@@ -157,6 +157,7 @@ public class TileManager {
             int tileNum = mapTileNum[worldCol][worldRow];
 
             if(tileNum == 2 && animationFrame == 1) tileNum = 3;
+            if(tileNum == 4 && animationFrame == 1) tileNum = 5;
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;

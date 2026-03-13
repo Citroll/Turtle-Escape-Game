@@ -36,32 +36,43 @@ public class AssetSetter {
         placeSeaweed(25, 9, 1);
 
         // Slots 4 and 5 reserved for randomly spawning ice cream (below kids)
-
         // Static punishments
         // (plastic bag) 4-5
         placePlasticBag(25, 11, 4);
         placePlasticBag(25, 12, 5);
         // plastic bottle 5
         placePlasticBottle(25, 13, 6);
+
+        placeKid(28, 14, 7);
+        placeKid(24, 5, 8);
     }
 
+    //ENEMIES
     public void setMonster() {
         gp.enemy[0] = new ENEMY_seagull(gp);
-        gp.enemy[0].worldX = gp.tileSize*26;
-        gp.enemy[0].worldY = gp.tileSize*9;
-
+        gp.enemy[0].worldX = gp.tileSize * 26;
+        gp.enemy[0].worldY = gp.tileSize * 9;
 
         gp.enemy[1] = new ENEMY_seagull(gp);
-        gp.enemy[1].worldX = gp.tileSize*20;
-        gp.enemy[1].worldY = gp.tileSize*10;
+        gp.enemy[1].worldX = gp.tileSize * 20;
+        gp.enemy[1].worldY = gp.tileSize * 10;
     }
 
+    //NPCS
+    private void placeKid(int col, int row, int slot) {
+        gp.obj[slot] = new NPC_Kid(gp);
+        gp.obj[slot].worldX = col * gp.tileSize;
+        gp.obj[slot].worldY = row * gp.tileSize;
+    }
+
+    //REWARDS
     private void placeSeaweed(int col, int row, int slot) {
         gp.obj[slot] = new OBJ_Seaweed(gp);
         gp.obj[slot].worldX = col * gp.tileSize;
         gp.obj[slot].worldY = row * gp.tileSize;
     }
 
+    //PUNISHMENTS
     private void placePlasticBag(int col, int row, int slot) {
         gp.obj[slot] = new PUN_PlasticBag(gp);
         gp.obj[slot].worldX = col * gp.tileSize;
