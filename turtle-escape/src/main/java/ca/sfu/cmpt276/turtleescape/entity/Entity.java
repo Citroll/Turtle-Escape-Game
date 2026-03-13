@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class Entity {
 
-    GamePanel gp;
+    protected GamePanel gp;
 
     /** The x-coordinate of the entity on the screen in pixels */
     public int worldX, worldY;
@@ -34,7 +34,7 @@ public class Entity {
     /** The current sprite frame number (1 or 2) used for walking animation */
     public int spriteNum = 1;
 
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle solidArea = new Rectangle(0, 0, 45, 45);
 
     public int solidAreaDefaultX, solidAreaDefaultY;
 
@@ -49,6 +49,8 @@ public class Entity {
     public int invincibleCounter = 0;
 
     public int type; // 0 is a player, 1 is a monster
+
+    public boolean onPath = false;
 
 
     public Entity(GamePanel gp) {
@@ -129,10 +131,7 @@ public class Entity {
 
     public void setAction(){};
 
-
-    public void update(){
-        setAction();
-
+    public void checkCollision(){
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkEntity(this, gp.enemy); // stop enemies walking into each other
@@ -145,6 +144,11 @@ public class Entity {
                 gp.player.invincible = true;
             }
         }
+    }
+
+    public void update(){
+        setAction();
+        checkCollision();
 
         if(collisionOn == false){
             switch(direction){
@@ -164,6 +168,66 @@ public class Entity {
             }
             spriteCounter = 0;
         }
-    };
+    }
+
+    public void searchPath(int goalCol, int goalRow){
+        int startCol = (worldX + solidArea.x)/gp.tileSize;
+        int startRow = (worldY + solidArea.y)/gp.tileSize;
+
+        gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+
+        if(gp.pFinder.search() == true){
+            int nextX = gp.pFinder.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pFinder.pathList.get(0).row * gp.tileSize;
+
+            int enLeftX = worldX + solidArea.x;
+            int enRightX = worldX + solidArea.x + solidArea.width;
+            int enTopY = worldY + solidArea.y;
+            int enBottomY = worldY + solidArea.y + solidArea.height;
+
+            if(enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize){
+                direction = "up";
+            } else if(enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize){
+                direction = "down";
+            } else if(enTopY >= nextY && enBottomY < nextY + gp.tileSize){
+                //left or right
+                if(enLeftX > nextX){
+                    direction = "left";
+                }
+                if(enLeftX < nextX){
+                    direction = "right";
+                }
+            } else if (enTopY > nextY && enLeftX > nextX){
+                //Left or up if stuck on block
+                direction = "up";
+                checkCollision();
+                if(collisionOn == true){
+                    direction = "left";
+                }
+            } else if (enTopY > nextY && enLeftX < nextX){
+                //Right or up if stuck on block
+                direction = "up";
+                checkCollision();
+                if(collisionOn == true){
+                    direction = "right";
+                }
+            } else if (enTopY < nextY && enLeftX > nextX) {
+                //Left or Down if stuck on block
+                direction = "down";
+                checkCollision();
+                if(collisionOn == true){
+                    direction = "left";
+                }
+            } else if (enTopY < nextY && enLeftX < nextX) {
+                //Right or down if stuck on block
+                direction = "down";
+                checkCollision();
+                if(collisionOn == true){
+                    direction = "right";
+                }
+            }
+
+        }
+    }
 
 }
