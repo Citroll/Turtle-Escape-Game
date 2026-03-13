@@ -1,10 +1,10 @@
 package ca.sfu.cmpt276.turtleescape.object;
 
-import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
-
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
+import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 
 /**
  * Represents a plastic bag punishment object.
@@ -20,7 +20,7 @@ public class PUN_PlasticBag extends SuperPunishment {
         name = "PlasticBag";
         penalty = 100;
         try {
-            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/plastic_bag.png"));
+            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("objects/plastic_bag.png"));
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();

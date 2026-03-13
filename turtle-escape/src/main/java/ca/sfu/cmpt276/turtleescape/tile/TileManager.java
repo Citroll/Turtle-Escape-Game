@@ -70,8 +70,8 @@ public class TileManager {
         setUp(0, "tiles/sand", false);
 
         //WATER 2-5 WATER, WATER_2, WATER+DEEP_WATER, DEEP_WATER_2
-        setUp(2, "tiles/water", false);
-        setUp(3, "tiles/water_2", false);
+        setUp(2, "tiles/water1", false);
+        setUp(3, "tiles/water2", false);
         //SANDCASTLE 6
         setUp(6, "tiles/castle", true);
         //TREE 7

@@ -37,9 +37,12 @@ public class AssetSetter {
 
         // Slots 4 and 5 reserved for randomly spawning ice cream (below kids)
 
-        // Static punishments (plastic) 4-5
+        // Static punishments
+        // (plastic bag) 4-5
         placePlasticBag(25, 11, 4);
         placePlasticBag(25, 12, 5);
+        // plastic bottle 5
+        placePlasticBottle(25, 13, 6);
     }
 
     public void setMonster() {
@@ -53,12 +56,6 @@ public class AssetSetter {
         gp.enemy[1].worldY = gp.tileSize*10;
     }
 
-    private void place(SuperObject obj, int col, int row, int slot) {
-        gp.obj[slot] = obj;
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
-    }
-
     private void placeSeaweed(int col, int row, int slot) {
         gp.obj[slot] = new OBJ_Seaweed(gp);
         gp.obj[slot].worldX = col * gp.tileSize;
@@ -67,6 +64,12 @@ public class AssetSetter {
 
     private void placePlasticBag(int col, int row, int slot) {
         gp.obj[slot] = new PUN_PlasticBag(gp);
+        gp.obj[slot].worldX = col * gp.tileSize;
+        gp.obj[slot].worldY = row * gp.tileSize;
+    }
+
+    private void placePlasticBottle(int col, int row, int slot) {
+        gp.obj[slot] = new PUN_PlasticBottle(gp);
         gp.obj[slot].worldX = col * gp.tileSize;
         gp.obj[slot].worldY = row * gp.tileSize;
     }

@@ -1,9 +1,10 @@
 package ca.sfu.cmpt276.turtleescape.object;
 
-import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import java.io.IOException;
+
+import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 
 /**
  * Represents an ice cream bonus reward object.
@@ -21,7 +22,7 @@ public class OBJ_IceCream extends SuperObject {
 
         name = "IceCream";
         try {
-            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("tiles/icecream.png"));
+            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("objects/icecream.png"));
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();
