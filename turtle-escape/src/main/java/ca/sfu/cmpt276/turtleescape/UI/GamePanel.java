@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
+import ca.sfu.cmpt276.turtleescape.ai.Pathfinder;
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
 import ca.sfu.cmpt276.turtleescape.entity.Entity;
 import ca.sfu.cmpt276.turtleescape.entity.Player;
@@ -148,6 +149,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      * move sound effect
      */
     Sound moveSE = new Sound();
+
+    public Pathfinder pFinder = new Pathfinder(this);
 
     /**
      * Constructs the GamePanel and initializes display settings. Sets preferred

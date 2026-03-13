@@ -7,13 +7,20 @@ import java.util.Random;
 
 public class ENEMY_seagull extends Entity {
 
+
+    // Beach boundary in tile coordinates
+    private static final int MIN_COL = 16;
+    private static final int MAX_COL = 31;
+    private static final int MIN_ROW = 5;
+    private static final int MAX_ROW = 16;
+
     public ENEMY_seagull(GamePanel gp) {
         super(gp);
 
         name = "Little Kid";
         type = 1;
 
-        speed = 1;
+        speed = 2;
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -32,29 +39,75 @@ public class ENEMY_seagull extends Entity {
         right2 = setUp("enemies/seagullRight");
     }
 
+    public void update(){
+        super.update();
+
+        // Convert current position to tile coords
+        int currentCol = worldX / gp.tileSize;
+        int currentRow = worldY / gp.tileSize;
+
+        // Push back and reverse direction if outside beach bounds
+        if (currentCol < MIN_COL) {
+            worldX = MIN_COL * gp.tileSize;
+            direction = "right";
+        }
+        if (currentCol > MAX_COL) {
+            worldX = MAX_COL * gp.tileSize;
+            direction = "left";
+        }
+        if (currentRow < MIN_ROW) {
+            worldY = MIN_ROW * gp.tileSize;
+            direction = "down";
+        }
+        if (currentRow > MAX_ROW) {
+            worldY = MAX_ROW * gp.tileSize;
+            direction = "up";
+        }
+    }
+
     @Override
     public void setAction() {
-        actionLockCounter++;
+        int xDistance = Math.abs(worldX - gp.player.worldX);
+        int yDistance = Math.abs(worldY - gp.player.worldY);
+        int tileDistance = (xDistance + yDistance) / gp.tileSize;
 
-        if(actionLockCounter == 120) {
+        // check if player is still on the beach (sand area)
+        int playerCol = gp.player.worldX / gp.tileSize;
+        int playerRow = gp.player.worldY / gp.tileSize;
+        boolean playerOnBeach = playerCol >= 16 && playerCol <= 31
+                && playerRow >= 5  && playerRow <= 16;
 
-            Random random = new Random();
-            int i = random.nextInt(100) + 1;
+        if (!onPath && tileDistance < 10 && playerOnBeach) onPath = true;
+        if (onPath && (tileDistance > 20 || !playerOnBeach)) onPath = false;
 
-            if (i < 25) {
-                direction = "up";
-            }
-            if (i > 25 && i <= 50) {
-                direction = "down";
-            }
-            if (i > 50 && i <= 75) {
-                direction = "left";
-            }
-            if (i > 75 && i <= 100) {
-                direction = "right";
-            }
+        if (onPath) {
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
+            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
+            searchPath(goalCol, goalRow);
+        } else {
 
-            actionLockCounter = 0;
+            actionLockCounter++;
+
+            if (actionLockCounter == 120) {
+
+                Random random = new Random();
+                int i = random.nextInt(100) + 1;
+
+                if (i < 25) {
+                    direction = "up";
+                }
+                if (i > 25 && i <= 50) {
+                    direction = "down";
+                }
+                if (i > 50 && i <= 75) {
+                    direction = "left";
+                }
+                if (i > 75 && i <= 100) {
+                    direction = "right";
+                }
+
+                actionLockCounter = 0;
+            }
         }
     }
 
