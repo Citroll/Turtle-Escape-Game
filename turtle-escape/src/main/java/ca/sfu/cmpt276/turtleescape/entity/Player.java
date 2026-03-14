@@ -59,7 +59,7 @@ public class Player extends Entity {
      * Sets the player's default starting position, speed, and direction.
      */
     public void setDefaultValues() {
-        worldX = gp.tileSize * 16;
+        worldX = gp.tileSize * 17;
         worldY = gp.tileSize * 10;
         speed = 4;
         direction = "down";
@@ -195,13 +195,16 @@ public class Player extends Entity {
         }
     }
 
-
+    /**
+     * Handles contact between the player and an enemy.
+     * If the player is not invincible, triggers the death screen.
+     *
+     * @param i the index of the contacted enemy in the enemy array, or 999 if none
+     */
     public void contactEnemy(int i){
         if(i != 999){
             if(invincible == false) {
-                gp.player.score -= 100;
-                gp.ui.triggerFlash();
-                invincible = true;
+                gp.gameState = GamePanel.GameState.DEAD;
             }
         }
     }

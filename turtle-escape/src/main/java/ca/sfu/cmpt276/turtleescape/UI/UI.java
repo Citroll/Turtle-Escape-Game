@@ -23,6 +23,9 @@ public class UI {
     /** The resume button for the pause screen */
     private Button resumeButton;
 
+    /** The restart button for the death screen*/
+    private Button restartButton;
+
     /** Damage flash */
     private int flashTimer = 0;
     private final int flashDuration = 20;
@@ -39,6 +42,7 @@ public class UI {
         font = new Font("Arial", Font.PLAIN, 50);
         playButton = new Button(0, 0, 200, 50, "PLAY", () -> gp.gameState = GamePanel.GameState.PLAYING);
         resumeButton = new Button(0, 0, 200, 50, "RESUME", () -> gp.gameState = GamePanel.GameState.PLAYING);
+        restartButton = new Button(0, 0, 200, 50, "RESTART", () -> gp.restartGame());
     }
 
     /**
@@ -144,6 +148,34 @@ public class UI {
         resumeButton.draw(g2);
     }
 
+
+
+    /**
+     * Draws the death screen with a semi-transparent black overlay, a "YOU DIED"
+     * title, and a restart button.
+     *
+     * @param g2     the Graphics2D context used for rendering
+     * @param width  the current width of the panel
+     * @param height the current height of the panel
+     */
+    public void drawDeathScreen(Graphics2D g2, int width, int height) {
+        g2.setColor(new Color(0, 0, 0, 180));
+        g2.fillRect(0, 0, width, height);
+
+        g2.setFont(new Font("Arial", Font.BOLD, 64));
+        g2.setColor(Color.RED);
+        String text = "YOU DIED";
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+        g2.drawString(text, (width - textWidth) / 2, height / 2 - 50);
+
+        int buttonX = (width - restartButton.getWidth()) / 2;
+        int buttonY = height / 2 + 20;
+        restartButton.setX(buttonX);
+        restartButton.setY(buttonY);
+        restartButton.draw(g2);
+    }
+
+
     /**
      * Overlays a red screen that slowly fades away when the player interacts
      * with a punishment.
@@ -175,6 +207,10 @@ public class UI {
         } else if (state == GamePanel.GameState.PAUSED) {
             if (resumeButton.contains(e.getX(), e.getY())) {
                 resumeButton.click();
+            }
+        } else if (state == GamePanel.GameState.DEAD) {
+            if (restartButton.contains(e.getX(), e.getY())) {
+                restartButton.click();
             }
         }
     }

@@ -34,7 +34,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         TITLE,
         PLAYING,
         PUNISHED,
-        PAUSED
+        PAUSED,
+        DEAD
     }
 
     /**
@@ -120,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     /**
      * Array of interactive objects on the map (rewards, items). Max 10 at once.
      */
-    public SuperObject[] obj = new SuperObject[10];
+    public SuperObject[] obj = new SuperObject[50];
 
     public Entity enemy[] = new Entity[20];
 
@@ -283,6 +284,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         } else if (gameState == GameState.PAUSED) {
             drawGame(g2);
             ui.drawPauseScreen(g2, getWidth(), getHeight());
+        } else if (gameState == GameState.DEAD) {
+            drawGame(g2);
+            ui.drawDeathScreen(g2, getWidth(), getHeight());
         }
 
         g2.dispose();
@@ -381,5 +385,31 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      */
     public void stopMoveSE() {
         moveSE.stop();
+    }
+
+
+    /**
+     * Resets the game to its initial state and transitions to the playing state.
+     * Resets the player's position, score, and invincibility, re-places all
+     * objects and enemies, resets the ice cream manager and UI timer.
+     */
+    public void restartGame() {
+        // reset player
+        player.setDefaultValues();
+        player.score = 0;
+        player.invincible = false;
+        player.invincibleCounter = 0;
+
+        // reset objects and enemies
+        aSetter.setObject();
+        aSetter.setMonster();
+
+        // reset ice cream
+        iceCreamManager = new IceCreamManager(this);
+
+        // reset UI timer
+        ui.playTime = 0;
+
+        gameState = GameState.PLAYING;
     }
 }

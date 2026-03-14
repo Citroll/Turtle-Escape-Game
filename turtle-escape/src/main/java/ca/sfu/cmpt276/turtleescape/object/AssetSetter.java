@@ -30,21 +30,19 @@ public class AssetSetter {
      * layout.
      */
     public void setObject() {
-
-        // Regular rewards (seaweed) — player must collect all of these to win 0-x (x=1)
         placeSeaweed(25, 8, 0);
-        placeSeaweed(25, 9, 1);
+        placeSeaweed(19, 7, 1);
+        // slots 2 and 3 left empty for ice cream
 
-        // Slots 4 and 5 reserved for randomly spawning ice cream (below kids)
-        // Static punishments
-        // (plastic bag) 4-5
-        placePlasticBag(25, 11, 4);
-        placePlasticBag(25, 12, 5);
-        // plastic bottle 5
-        placePlasticBottle(25, 13, 6);
+        placePlasticBag(21, 11, 4);
+        placePlasticBag(24, 15, 5);
+        placePlasticBottle(27, 11, 6);
+        placePlasticBottle(27, 7, 7);
 
-        placeKid(28, 14, 7);
-        placeKid(24, 5, 8);
+        placeKid(28, 14, 8);
+        placeKid(24, 5, 9);
+
+        placeSeaweed(15, 20, 10); // moved here
     }
 
     //ENEMIES

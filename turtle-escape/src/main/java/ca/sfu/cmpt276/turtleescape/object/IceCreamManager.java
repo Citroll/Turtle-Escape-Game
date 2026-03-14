@@ -19,7 +19,7 @@ public class IceCreamManager {
     /**
      * How many frames ice cream stays before vanishing (~3 seconds)
      */
-    private static final int ICE_CREAM_LIFETIME = 180;
+    private static final int ICE_CREAM_LIFETIME = 240;
     /**
      * Frame counter for spawn timing
      */

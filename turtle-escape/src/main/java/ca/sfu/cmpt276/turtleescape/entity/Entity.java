@@ -131,6 +131,11 @@ public class Entity {
 
     public void setAction(){};
 
+    /**
+     * Checks tile, entity, and player collision for this entity.
+     * If this is an enemy and it contacts the player while the player is not
+     * invincible, triggers the death screen.
+     */
     public void checkCollision(){
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -139,9 +144,7 @@ public class Entity {
 
         if(this.type == 1 && contactPlayer == true){
             if(gp.player.invincible == false){
-                gp.player.score -= 100;
-                gp.ui.triggerFlash();
-                gp.player.invincible = true;
+                gp.gameState = GamePanel.GameState.DEAD;
             }
         }
     }
