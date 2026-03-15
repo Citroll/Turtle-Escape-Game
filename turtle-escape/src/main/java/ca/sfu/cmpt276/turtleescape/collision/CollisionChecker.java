@@ -2,7 +2,6 @@ package ca.sfu.cmpt276.turtleescape.collision;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 import ca.sfu.cmpt276.turtleescape.entity.Entity;
-import ca.sfu.cmpt276.turtleescape.object.SuperObject;
 
 public class CollisionChecker {
     // reference to the main game panel
@@ -33,40 +32,53 @@ public class CollisionChecker {
 
         switch (entity.direction) {
             case "up":
-                // predict the top edge after moving up, check both top corner tiles
                 entityTopRow = (entityTopY - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
+                // also check overlay layer
+                tileNum1 = gp.tileM.mapOverlayNum[entityLeftCol][entityTopRow];
+                tileNum2 = gp.tileM.mapOverlayNum[entityRightCol][entityTopRow];
+                if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) entity.collisionOn = true;
+                if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) entity.collisionOn = true;
                 break;
             case "down":
-                // predict the bottom edge after moving down, check both bottom corner tiles
                 entityBottomRow = (entityBottomY + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
+                tileNum1 = gp.tileM.mapOverlayNum[entityLeftCol][entityBottomRow];
+                tileNum2 = gp.tileM.mapOverlayNum[entityRightCol][entityBottomRow];
+                if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) entity.collisionOn = true;
+                if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) entity.collisionOn = true;
                 break;
             case "left":
-                // predict the left edge after moving left, check both left corner tiles
                 entityLeftCol = (entityLeftX - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
+                tileNum1 = gp.tileM.mapOverlayNum[entityLeftCol][entityTopRow];
+                tileNum2 = gp.tileM.mapOverlayNum[entityLeftCol][entityBottomRow];
+                if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) entity.collisionOn = true;
+                if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) entity.collisionOn = true;
                 break;
             case "right":
-                // predict the right edge after moving right, check both right corner tiles
                 entityRightCol = (entityRightX + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
+                tileNum1 = gp.tileM.mapOverlayNum[entityRightCol][entityTopRow];
+                tileNum2 = gp.tileM.mapOverlayNum[entityRightCol][entityBottomRow];
+                if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) entity.collisionOn = true;
+                if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) entity.collisionOn = true;
                 break;
         }
         

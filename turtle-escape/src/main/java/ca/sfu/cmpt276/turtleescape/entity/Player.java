@@ -58,8 +58,8 @@ public class Player extends Entity {
      * Sets the player's default starting position, speed, and direction.
      */
     public void setDefaultValues() {
-        worldX = gp.tileSize * 17;
-        worldY = gp.tileSize * 10;
+        worldX = gp.tileSize * 5;
+        worldY = gp.tileSize * 11;
         speed = 4;
         direction = "down";
         solidArea = new Rectangle(8, 16, 32, 32);

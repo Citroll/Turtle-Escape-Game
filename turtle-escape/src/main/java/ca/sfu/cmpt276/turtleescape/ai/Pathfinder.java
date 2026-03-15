@@ -123,6 +123,11 @@ public class Pathfinder {
             if (gp.tileM.tile[tileNum].collision == true) {
                 node[col][row].solid = true;
             }
+            // also block on solid overlay tiles
+            int overlayNum = gp.tileM.mapOverlayNum[col][row];
+            if (overlayNum != -1 && gp.tileM.tile[overlayNum] != null && gp.tileM.tile[overlayNum].collision) {
+                node[col][row].solid = true;
+            }
 
             // Set Cost
             getCost(node[col][row]);

@@ -84,7 +84,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      */
     public final int screenHeight = tileSize * maxScreenRow;
 
-    public final int maxWorldCol = 64;
+    public final int maxWorldCol = 100;
     public final int maxWorldRow = 22;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
@@ -161,7 +161,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      */
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.addMouseListener(this);
