@@ -13,17 +13,27 @@ public class IceCreamManager {
 
     // --- Ice cream spawn/despawn config ---
     /**
-     * Frames between spawn attempts (~5 seconds at 60fps)
+     * Frames between spawn attempts (~3 seconds at 60fps)
      */
-    private static final int ICE_CREAM_SPAWN_INTERVAL = 300;
+    private static final int ICE_CREAM_SPAWN_INTERVAL = 240;
     /**
      * How many frames ice cream stays before vanishing (~3 seconds)
      */
-    private static final int ICE_CREAM_LIFETIME = 240;
+    private static final int ICE_CREAM_LIFETIME = 180;
     /**
      * Frame counter for spawn timing
      */
     private int spawnTimer = 0;
+
+    /**
+     * Remaining lifetime for ice cream in slot 1
+     */
+    private int iceCreamLife = 0;
+
+    /**
+     * True once slot 1 ice cream has been collected — will not respawn
+     */
+    private boolean iceCreamCollected = false;
 
     /**
      * Remaining lifetime for ice cream in slot 2
@@ -60,9 +70,16 @@ public class IceCreamManager {
     public void update() {
         //Icecream killer
         if (gp.obj[1] != null) {
+            iceCreamLife--;
+            if (iceCreamLife <= 0) {
+                gp.obj[1] = null;
+            }
+        }
+
+        if (gp.obj[2] != null) {
             iceCreamLife2--;
             if (iceCreamLife2 <= 0) {
-                gp.obj[1] = null;
+                gp.obj[2] = null;
             }
         }
 
@@ -71,8 +88,13 @@ public class IceCreamManager {
         if (spawnTimer >= ICE_CREAM_SPAWN_INTERVAL) {
             spawnTimer = 0;
 
-            if (gp.obj[2] == null && !iceCream2Collected && Math.random() < 0.5) {
-                placeIceCream(5, 6, 1);
+            if (gp.obj[1] == null && !iceCreamCollected) {
+                placeIceCream(11, 16, 1);
+                iceCreamLife = ICE_CREAM_LIFETIME;
+            }
+
+            if (gp.obj[2] == null && !iceCream2Collected) {
+                placeIceCream(13, 3, 2);
                 iceCreamLife2 = ICE_CREAM_LIFETIME;
             }
         }
@@ -85,6 +107,10 @@ public class IceCreamManager {
      */
     public void setCollected(int slot) {
         if (slot == 1) {
+            iceCreamCollected = true;
+        }
+
+        if (slot == 2) {
             iceCream2Collected = true;
         }
     }

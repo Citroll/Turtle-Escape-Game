@@ -4,7 +4,7 @@ import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 
 import javax.swing.*;
 
-/**
+/*
  * Entry point for the Turtle Escape application.
  * Initializes the game window and launches the game panel.
  */

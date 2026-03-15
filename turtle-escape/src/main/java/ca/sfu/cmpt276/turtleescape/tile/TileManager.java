@@ -105,8 +105,8 @@ public class TileManager {
         setUp(22, "tiles/buoy", true); //22, buoy
         setUp(23, "tiles/rocks", true); //23 rock
         setUp(24, "tiles/coral", true); //24, coral
-        setUp(25, "tiles/egg", true); //25, egg
-        setUp(26, "objects/brokenegg", true); //26, broken egg
+        setUp(25, "tiles/egg", false); //25, egg
+        setUp(26, "objects/brokenegg", false); //26, broken egg
         //25, sunkenboat
     }
 

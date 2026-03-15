@@ -63,7 +63,7 @@ public class Player extends Entity {
      * Sets the player's default starting position, speed, and direction.
      */
     public void setDefaultValues() {
-        worldX = gp.tileSize * 5;
+        worldX = gp.tileSize * 3;
         worldY = gp.tileSize * 11;
         speed = 4;
         direction = "down";
@@ -245,9 +245,8 @@ public class Player extends Entity {
                         break;
                     case "IceCream":
                         score += 250;
-                        if (index == 1) {
-                            gp.setIceCreamCollected(1);
-                        }
+                        if (index == 1) gp.setIceCreamCollected(1);
+                        if (index == 2) gp.setIceCreamCollected(2);
                         gp.obj[index] = null;
                         gp.playSE(1);
                         gp.ui.triggerGreenFlash();

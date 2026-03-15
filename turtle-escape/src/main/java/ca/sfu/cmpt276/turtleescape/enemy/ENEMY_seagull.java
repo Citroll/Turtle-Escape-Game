@@ -9,10 +9,10 @@ public class ENEMY_seagull extends Entity {
 
 
     // Beach boundary in tile coordinates
-    private static final int MIN_COL = 16;
-    private static final int MAX_COL = 30;
-    private static final int MIN_ROW = 5;
-    private static final int MAX_ROW = 16;
+    private static final int MIN_COL = 1;
+    private static final int MAX_COL = 20;
+    private static final int MIN_ROW = 1;
+    private static final int MAX_ROW = 21;
 
     private final Random random = new Random();
 
@@ -97,11 +97,11 @@ public class ENEMY_seagull extends Entity {
         // check if player is still on the beach (sand area)
         int playerCol = gp.player.worldX / gp.tileSize;
         int playerRow = gp.player.worldY / gp.tileSize;
-        boolean playerOnBeach = playerCol >= 16 && playerCol <= 31
-                && playerRow >= 5  && playerRow <= 16;
+        boolean playerOnBeach = playerCol >= MIN_COL && playerCol <= MAX_COL
+                && playerRow >= MIN_ROW  && playerRow <= MAX_ROW;
 
-        if (!onPath && tileDistance < 10 && playerOnBeach) onPath = true;
-        if (onPath && (tileDistance > 20 || !playerOnBeach)) onPath = false;
+        if (!onPath && tileDistance < 20 && playerOnBeach) onPath = true;
+        if (onPath && (tileDistance > 30 || !playerOnBeach)) onPath = false;
 
         if (onPath) {
             int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;

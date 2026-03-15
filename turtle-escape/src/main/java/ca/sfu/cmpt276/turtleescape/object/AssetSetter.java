@@ -31,27 +31,34 @@ public class AssetSetter {
      */
     public void setObject() {
         //OBJECTIVES
-        placeSeaweed(3, 5, 0);
+        placeSeaweed(5, 2, 0);
+        placeSeaweed(7, 2, 3);
+        placeSeaweed(9, 2, 4);
         // slot 1 = icecream
-        placeKid(5, 5, 3);
-        placeJellyfish(7, 5, 4);
-        placeShrimp(9, 5,  5);
-
-        //PUNISHMENTS
-        placePlasticBag(11, 5, 6);
-        placePlasticBottle(13, 5, 7);
-        placeHook(15, 5, 8);
+        placeKid(11, 15, 5);
+        placeKid(13, 2, 6);
+//        placeJellyfish(7, 5, );
+//        placeShrimp(9, 5,  );
+//
+//        //PUNISHMENTS
+//        placePlasticBag(11, 5, );
+//        placePlasticBottle(13, 5, );
+//        placeHook(15, 5, );
     }
 
     //ENEMIES
     public void setMonster() {
         gp.enemy[0] = new ENEMY_seagull(gp);
-        gp.enemy[0].worldX = gp.tileSize * 26;
-        gp.enemy[0].worldY = gp.tileSize * 9;
+        gp.enemy[0].worldX = gp.tileSize * 14;
+        gp.enemy[0].worldY = gp.tileSize * 7;
 
         gp.enemy[1] = new ENEMY_seagull(gp);
-        gp.enemy[1].worldX = gp.tileSize * 20;
-        gp.enemy[1].worldY = gp.tileSize * 10;
+        gp.enemy[1].worldX = gp.tileSize * 14;
+        gp.enemy[1].worldY = gp.tileSize * 20;
+
+        gp.enemy[2] = new ENEMY_seagull(gp);
+        gp.enemy[2].worldX = gp.tileSize * 14;
+        gp.enemy[2].worldY = gp.tileSize * 14;
     }
 
     //NPCS
