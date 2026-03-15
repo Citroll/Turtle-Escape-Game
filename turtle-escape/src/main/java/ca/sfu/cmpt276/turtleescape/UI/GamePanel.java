@@ -35,7 +35,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         PLAYING,
         PUNISHED,
         PAUSED,
-        DEAD
+        DEAD,
+        WIN
     }
 
     /**
@@ -281,12 +282,16 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         } else if (gameState == GameState.PLAYING || gameState == GameState.PUNISHED) {
             drawGame(g2);
             ui.drawRedFlash(g2, getWidth(), getHeight());
+            ui.drawGreenFlash(g2, getWidth(), getHeight());
         } else if (gameState == GameState.PAUSED) {
             drawGame(g2);
             ui.drawPauseScreen(g2, getWidth(), getHeight());
         } else if (gameState == GameState.DEAD) {
             drawGame(g2);
             ui.drawDeathScreen(g2, getWidth(), getHeight());
+        } else if (gameState == GameState.WIN) {
+            drawGame(g2);
+            ui.drawWinScreen(g2, getWidth(), getHeight());
         }
 
         g2.dispose();

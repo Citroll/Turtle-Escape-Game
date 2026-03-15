@@ -193,6 +193,15 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
+
+        // add at the end of update()
+        int playerCol = worldX / gp.tileSize;
+        int playerRow = worldY / gp.tileSize;
+
+        // trigger win when player reaches the water ()
+        if (playerCol >= 32) {
+            gp.gameState = GamePanel.GameState.WIN;
+        }
     }
 
     /**
@@ -227,6 +236,7 @@ public class Player extends Entity {
                         score += 100;
                         gp.obj[index] = null;
                         gp.playSE(1);
+                        gp.ui.triggerGreenFlash();
                         break;
                     case "IceCream":
                         score += 250;
@@ -238,6 +248,7 @@ public class Player extends Entity {
                         }
                         gp.obj[index] = null;
                         gp.playSE(1);
+                        gp.ui.triggerGreenFlash();
                         break;
                 }
             }

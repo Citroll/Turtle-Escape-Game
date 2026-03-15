@@ -30,6 +30,13 @@ public class UI {
     private int flashTimer = 0;
     private final int flashDuration = 20;
 
+    /** Score collected green flash*/
+    private int greenFlashTimer = 0;
+    private final int greenFlashDuration = 20;
+
+    /** The continue/back to title button on the win screen */
+    private Button winButton;
+
     /**
      * Represents the UI for the game
      * Handles the display settings for the score and timer
@@ -43,6 +50,7 @@ public class UI {
         playButton = new Button(0, 0, 200, 50, "PLAY", () -> gp.gameState = GamePanel.GameState.PLAYING);
         resumeButton = new Button(0, 0, 200, 50, "RESUME", () -> gp.gameState = GamePanel.GameState.PLAYING);
         restartButton = new Button(0, 0, 200, 50, "RESTART", () -> gp.restartGame());
+        winButton = new Button(0, 0, 200, 50, "PLAY AGAIN", () -> gp.restartGame());
     }
 
     /**
@@ -176,6 +184,34 @@ public class UI {
     }
 
 
+    public void drawWinScreen(Graphics2D g2, int width, int height) {
+        g2.setColor(new Color(0, 0, 0, 180));
+        g2.fillRect(0, 0, width, height);
+
+        g2.setFont(new Font("Arial", Font.BOLD, 64));
+        g2.setColor(Color.GREEN);
+        String title = "YOU ESCAPED!";
+        int titleWidth = g2.getFontMetrics().stringWidth(title);
+        g2.drawString(title, (width - titleWidth) / 2, height / 2 - 80);
+
+        g2.setFont(new Font("Arial", Font.BOLD, 36));
+        g2.setColor(Color.WHITE);
+        String scoreText = "Score: " + gp.player.score;
+        int scoreWidth = g2.getFontMetrics().stringWidth(scoreText);
+        g2.drawString(scoreText, (width - scoreWidth) / 2, height / 2 - 20);
+
+        String timeText = "Time: " + dFormat.format(playTime);
+        int timeWidth = g2.getFontMetrics().stringWidth(timeText);
+        g2.drawString(timeText, (width - timeWidth) / 2, height / 2 + 30);
+
+        int buttonX = (width - winButton.getWidth()) / 2;
+        int buttonY = height / 2 + 80;
+        winButton.setX(buttonX);
+        winButton.setY(buttonY);
+        winButton.draw(g2);
+    }
+
+
     /**
      * Overlays a red screen that slowly fades away when the player interacts
      * with a punishment.
@@ -190,6 +226,23 @@ public class UI {
             g2.setColor(new Color(255, 0, 0, (int)(120 * fade)));
             g2.fillRect(0, 0, width, height);
             flashTimer--;
+        }
+    }
+
+    /**
+     * Overlays a green screen that slowly fades away when the player interacts
+     * with a punishment.
+     *
+     * @param g2     the Graphics2D context used for rendering
+     * @param width  the current width of the panel
+     * @param height the current height of the panel
+     */
+    public void drawGreenFlash(Graphics2D g2, int width, int height) {
+        if (greenFlashTimer > 0) {
+            float fade = (float) greenFlashTimer / greenFlashDuration;
+            g2.setColor(new Color(0, 255, 0, (int)(120 * fade)));
+            g2.fillRect(0, 0, width, height);
+            greenFlashTimer--;
         }
     }
 
@@ -212,11 +265,20 @@ public class UI {
             if (restartButton.contains(e.getX(), e.getY())) {
                 restartButton.click();
             }
+        } else if (state == GamePanel.GameState.WIN) {
+            if (winButton.contains(e.getX(), e.getY())) {
+                winButton.click();
+            }
         }
     }
 
     // redFlash helper
     public void triggerFlash() {
         flashTimer = flashDuration;
+    }
+
+    // GreenFlash helper
+    public void triggerGreenFlash() {
+        greenFlashTimer = greenFlashDuration;
     }
 }
