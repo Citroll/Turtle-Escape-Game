@@ -27,10 +27,15 @@ public class Player extends Entity {
 
     public int score;
 
-    /** whether a movement sound (walk/swim) is currently looping */
+    /**
+     * whether a movement sound (walk/swim) is currently looping
+     */
     boolean moveSoundPlaying = false;
 
-    /** the sound url index of the currently playing movement sound, or -1 if none */
+    /**
+     * the sound url index of the currently playing movement sound, or -1 if
+     * none
+     */
     int currentMoveSoundIndex = -1;
 
     /**
@@ -68,8 +73,9 @@ public class Player extends Entity {
     }
 
     /**
-     * Loads all 8 directional sprite frames for the player turtle from resources.
-     * Two frames per direction (up, down, left, right) are loaded to support walking animation.
+     * Loads all 8 directional sprite frames for the player turtle from
+     * resources. Two frames per direction (up, down, left, right) are loaded to
+     * support walking animation.
      */
     public void getPlayerImage() {
         up1 = setUp("player/TurtleUp");
@@ -81,8 +87,6 @@ public class Player extends Entity {
         right1 = setUp("player/TurtleRight");
         right2 = setUp("player/TurtleRight2");
     }
-
-
 
     /**
      * Updates the player's position and animation frame based on keyboard
@@ -185,9 +189,9 @@ public class Player extends Entity {
             }
         }
 
-        if(invincible == true){
+        if (invincible == true) {
             invincibleCounter++;
-            if(invincibleCounter > 60){
+            if (invincibleCounter > 60) {
                 invincible = false;
                 invincibleCounter = 0;
             }
@@ -205,14 +209,15 @@ public class Player extends Entity {
     }
 
     /**
-     * Handles contact between the player and an enemy.
-     * If the player is not invincible, triggers the death screen.
+     * Handles contact between the player and an enemy. If the player is not
+     * invincible, triggers the death screen.
      *
-     * @param i the index of the contacted enemy in the enemy array, or 999 if none
+     * @param i the index of the contacted enemy in the enemy array, or 999 if
+     * none
      */
-    public void contactEnemy(int i){
-        if(i != 999){
-            if(invincible == false) {
+    public void contactEnemy(int i) {
+        if (i != 999) {
+            if (invincible == false) {
                 gp.gameState = GamePanel.GameState.DEAD;
             }
         }
@@ -240,12 +245,21 @@ public class Player extends Entity {
                         break;
                     case "IceCream":
                         score += 250;
-                        if (index == 2) {
-                            gp.setIceCreamCollected(2);
+                        if (index == 1) {
+                            gp.setIceCreamCollected(1);
                         }
-                        if (index == 3) {
-                            gp.setIceCreamCollected(3);
-                        }
+                        gp.obj[index] = null;
+                        gp.playSE(1);
+                        gp.ui.triggerGreenFlash();
+                        break;
+                    case "Jellyfish":
+                        score += 100;
+                        gp.obj[index] = null;
+                        gp.playSE(1);
+                        gp.ui.triggerGreenFlash();
+                        break;
+                    case "Shrimp":
+                        score += 100;
                         gp.obj[index] = null;
                         gp.playSE(1);
                         gp.ui.triggerGreenFlash();
@@ -299,7 +313,7 @@ public class Player extends Entity {
                 break;
         }
 
-        if(invincible == true){
+        if (invincible == true) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
 

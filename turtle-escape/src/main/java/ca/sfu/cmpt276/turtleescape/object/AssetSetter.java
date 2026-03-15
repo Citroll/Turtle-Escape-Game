@@ -30,19 +30,17 @@ public class AssetSetter {
      * layout.
      */
     public void setObject() {
-        placeSeaweed(25, 8, 0);
-        placeSeaweed(19, 7, 1);
-        // slots 2 and 3 left empty for ice cream
+        //OBJECTIVES
+        placeSeaweed(3, 5, 0);
+        // slot 1 = icecream
+        placeKid(5, 5, 3);
+        placeJellyfish(7, 5, 4);
+        placeShrimp(9, 5,  5);
 
-        placePlasticBag(21, 11, 4);
-        placePlasticBag(24, 15, 5);
-        placePlasticBottle(27, 11, 6);
-        placePlasticBottle(27, 7, 7);
-
-        placeKid(28, 14, 8);
-        placeKid(24, 5, 9);
-
-        placeSeaweed(15, 20, 10); // moved here
+        //PUNISHMENTS
+        placePlasticBag(11, 5, 6);
+        placePlasticBottle(13, 5, 7);
+        placeHook(15, 5, 8);
     }
 
     //ENEMIES
@@ -70,6 +68,18 @@ public class AssetSetter {
         gp.obj[slot].worldY = row * gp.tileSize;
     }
 
+    private void placeShrimp(int col, int row, int slot) {
+        gp.obj[slot] = new OBJ_Shrimp(gp);
+        gp.obj[slot].worldX = col * gp.tileSize;
+        gp.obj[slot].worldY = row * gp.tileSize;
+    }
+
+    private void placeJellyfish(int col, int row, int slot) {
+        gp.obj[slot] = new OBJ_Jellyfish(gp);
+        gp.obj[slot].worldX = col * gp.tileSize;
+        gp.obj[slot].worldY = row * gp.tileSize;
+    }
+
     //PUNISHMENTS
     private void placePlasticBag(int col, int row, int slot) {
         gp.obj[slot] = new PUN_PlasticBag(gp);
@@ -79,6 +89,12 @@ public class AssetSetter {
 
     private void placePlasticBottle(int col, int row, int slot) {
         gp.obj[slot] = new PUN_PlasticBottle(gp);
+        gp.obj[slot].worldX = col * gp.tileSize;
+        gp.obj[slot].worldY = row * gp.tileSize;
+    }
+
+    private void placeHook(int col, int row, int slot) {
+        gp.obj[slot] = new PUN_Hook(gp);
         gp.obj[slot].worldX = col * gp.tileSize;
         gp.obj[slot].worldY = row * gp.tileSize;
     }

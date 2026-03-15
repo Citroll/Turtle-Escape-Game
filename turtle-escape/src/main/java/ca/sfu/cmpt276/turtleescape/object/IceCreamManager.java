@@ -31,19 +31,9 @@ public class IceCreamManager {
     private int iceCreamLife2 = 0;
 
     /**
-     * Remaining lifetime for ice cream in slot 3
-     */
-    private int iceCreamLife3 = 0;
-
-    /**
      * True once slot 2 ice cream has been collected — will not respawn
      */
     private boolean iceCream2Collected = false;
-
-    /**
-     * True once slot 3 ice cream has been collected — will not respawn
-     */
-    private boolean iceCream3Collected = false;
 
     /**
      * Constructs the GamePanel and initializes display settings. Sets preferred
@@ -69,16 +59,10 @@ public class IceCreamManager {
 
     public void update() {
         //Icecream killer
-        if (gp.obj[2] != null) {
+        if (gp.obj[1] != null) {
             iceCreamLife2--;
             if (iceCreamLife2 <= 0) {
-                gp.obj[2] = null;
-            }
-        }
-        if (gp.obj[3] != null) {
-            iceCreamLife3--;
-            if (iceCreamLife3 <= 0) {
-                gp.obj[3] = null;
+                gp.obj[1] = null;
             }
         }
 
@@ -88,13 +72,8 @@ public class IceCreamManager {
             spawnTimer = 0;
 
             if (gp.obj[2] == null && !iceCream2Collected && Math.random() < 0.5) {
-                placeIceCream(24, 6, 2);
+                placeIceCream(5, 6, 1);
                 iceCreamLife2 = ICE_CREAM_LIFETIME;
-            }
-
-            if (gp.obj[3] == null && !iceCream3Collected && Math.random() < 0.5) {
-                placeIceCream(28, 15, 3);
-                iceCreamLife3 = ICE_CREAM_LIFETIME;
             }
         }
     }
@@ -102,14 +81,11 @@ public class IceCreamManager {
     /**
      * Marks an ice cream slot as permanently collected so it will not respawn.
      *
-     * @param slot the obj array index (2 or 3)
+     * @param slot the obj array index
      */
     public void setCollected(int slot) {
-        if (slot == 2) {
+        if (slot == 1) {
             iceCream2Collected = true;
-        }
-        if (slot == 3) {
-            iceCream3Collected = true;
         }
     }
 
