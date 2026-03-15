@@ -34,6 +34,9 @@ public class UI {
     private int greenFlashTimer = 0;
     private final int greenFlashDuration = 20;
 
+    /** The continue/back to title button on the win screen */
+    private Button winButton;
+
     /**
      * Represents the UI for the game
      * Handles the display settings for the score and timer
@@ -47,6 +50,7 @@ public class UI {
         playButton = new Button(0, 0, 200, 50, "PLAY", () -> gp.gameState = GamePanel.GameState.PLAYING);
         resumeButton = new Button(0, 0, 200, 50, "RESUME", () -> gp.gameState = GamePanel.GameState.PLAYING);
         restartButton = new Button(0, 0, 200, 50, "RESTART", () -> gp.restartGame());
+        winButton = new Button(0, 0, 200, 50, "PLAY AGAIN", () -> gp.restartGame());
     }
 
     /**
@@ -180,6 +184,34 @@ public class UI {
     }
 
 
+    public void drawWinScreen(Graphics2D g2, int width, int height) {
+        g2.setColor(new Color(0, 0, 0, 180));
+        g2.fillRect(0, 0, width, height);
+
+        g2.setFont(new Font("Arial", Font.BOLD, 64));
+        g2.setColor(Color.GREEN);
+        String title = "YOU ESCAPED!";
+        int titleWidth = g2.getFontMetrics().stringWidth(title);
+        g2.drawString(title, (width - titleWidth) / 2, height / 2 - 80);
+
+        g2.setFont(new Font("Arial", Font.BOLD, 36));
+        g2.setColor(Color.WHITE);
+        String scoreText = "Score: " + gp.player.score;
+        int scoreWidth = g2.getFontMetrics().stringWidth(scoreText);
+        g2.drawString(scoreText, (width - scoreWidth) / 2, height / 2 - 20);
+
+        String timeText = "Time: " + dFormat.format(playTime);
+        int timeWidth = g2.getFontMetrics().stringWidth(timeText);
+        g2.drawString(timeText, (width - timeWidth) / 2, height / 2 + 30);
+
+        int buttonX = (width - winButton.getWidth()) / 2;
+        int buttonY = height / 2 + 80;
+        winButton.setX(buttonX);
+        winButton.setY(buttonY);
+        winButton.draw(g2);
+    }
+
+
     /**
      * Overlays a red screen that slowly fades away when the player interacts
      * with a punishment.
@@ -232,6 +264,10 @@ public class UI {
         } else if (state == GamePanel.GameState.DEAD) {
             if (restartButton.contains(e.getX(), e.getY())) {
                 restartButton.click();
+            }
+        } else if (state == GamePanel.GameState.WIN) {
+            if (winButton.contains(e.getX(), e.getY())) {
+                winButton.click();
             }
         }
     }

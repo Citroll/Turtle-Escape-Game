@@ -193,6 +193,15 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
+
+        // add at the end of update()
+        int playerCol = worldX / gp.tileSize;
+        int playerRow = worldY / gp.tileSize;
+
+        // trigger win when player reaches the water ()
+        if (playerCol >= 32) {
+            gp.gameState = GamePanel.GameState.WIN;
+        }
     }
 
     /**
