@@ -66,18 +66,30 @@ public class TileManager {
      * Tile 0 = sand, Tile 1 = water, Tile 2 = castle (barrier).
      */
     public void getTileImage() {
-        //SAND 0-1 SAND, SAND+WATER EDGE
-        setUp(0, "tiles/sand", false);
+        //BACKGROUND MAP
+        setUp(0, "tiles/sand", false); //0, sand
+        setUp(1, "tiles/sandwater1", false); //1, wateredge1
+        setUp(2, "tiles/sandwater2", false); //2, wateredge2
+        //3, wateredgeflipped1
+        //4, wateredgeflipped2
+        setUp(5, "tiles/water1", false);//5, water1
+        setUp(6, "tiles/water2", false);//6, water2
+        //7, deepwateredge1
+        //8, deepwateredge2
+        //9, deepwateredgeflipped1
+        //10, deepwateredgeflipped2
 
-        //WATER 2-9 WATER, WATER_2, WATER+DEEP_WATER, DEEP_WATER_2, WATER_BUOY, DEEP_WATER_BUOY
-        setUp(2, "tiles/water1", false);
-        setUp(3, "tiles/water2", false);
-        setUp(4, "tiles/buoy1", true);
-        setUp(5, "tiles/buoy2", true);
-        //SANDCASTLE 7
-        setUp(7, "tiles/castle", true);
-        //TREE 8
-        setUp(8, "tiles/tree", true);
+
+
+        //BARRIERS
+        setUp(20, "tiles/tree", true);
+        setUp(21, "tiles/castle", true);
+        setUp(22, "tiles/buoy1", true);
+        setUp(23, "tiles/buoy2", true);
+        //24, coral1
+        //25, coral2
+        //26, sunkenboat1
+        //27, sunkenboat2
         }
 
 
@@ -156,8 +168,9 @@ public class TileManager {
 
             int tileNum = mapTileNum[worldCol][worldRow];
 
-            if(tileNum == 2 && animationFrame == 1) tileNum = 3;
-            if(tileNum == 4 && animationFrame == 1) tileNum = 5;
+            if(tileNum == 1 && animationFrame == 1) tileNum = 2; //sand+water
+            if(tileNum == 5 && animationFrame == 1) tileNum = 6; //water
+            if(tileNum == 22 && animationFrame == 1) tileNum = 23; //buoy
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
