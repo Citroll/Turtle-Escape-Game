@@ -61,8 +61,12 @@ public class AssetSetter {
         gp.enemy[2].worldY = gp.tileSize * 14;
 
         gp.enemy[3] = new SuperEnemy(gp, "crab", 21, 44, 1, 21);
-        gp.enemy[3].worldX = gp.tileSize * 14;
+        gp.enemy[3].worldX = gp.tileSize * 30;
         gp.enemy[3].worldY = gp.tileSize * 14;
+
+        gp.enemy[4] = new SuperEnemy(gp, "shark", 45, 73, 1, 21);
+        gp.enemy[4].worldX = gp.tileSize * 55;
+        gp.enemy[4].worldY = gp.tileSize * 14;
 
     }
 

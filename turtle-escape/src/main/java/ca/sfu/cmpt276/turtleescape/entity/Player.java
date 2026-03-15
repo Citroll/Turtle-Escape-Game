@@ -67,7 +67,7 @@ public class Player extends Entity {
         worldY = gp.tileSize * 11;
         speed = 4;
         direction = "down";
-        solidArea = new Rectangle(8, 16, 32, 32);
+        solidArea = new Rectangle(4, 4, 40, 40);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
     }

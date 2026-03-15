@@ -34,7 +34,7 @@ public class Entity {
     /** The current sprite frame number (1 or 2) used for walking animation */
     public int spriteNum = 1;
 
-    public Rectangle solidArea = new Rectangle(0, 0, 45, 45);
+    public Rectangle solidArea = new Rectangle(0, 0, 40, 40);
 
     public int solidAreaDefaultX, solidAreaDefaultY;
 
@@ -161,6 +161,7 @@ public class Entity {
                 case "right": worldX += speed; break;
             }
         }
+
 
         spriteCounter++;
         if(spriteCounter > 12){
