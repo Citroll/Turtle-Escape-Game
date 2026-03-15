@@ -5,41 +5,44 @@ import ca.sfu.cmpt276.turtleescape.entity.Entity;
 
 import java.util.Random;
 
-public class ENEMY_seagull extends Entity {
+public class SuperEnemy extends Entity {
 
 
     // Beach boundary in tile coordinates
-    private static final int MIN_COL = 1;
-    private static final int MAX_COL = 20;
-    private static final int MIN_ROW = 1;
-    private static final int MAX_ROW = 21;
+    private final int minCol;
+    private final int maxCol;
+    private final int minRow;
+    private final int maxRow ;
+
 
     private final Random random = new Random();
 
-
-    public ENEMY_seagull(GamePanel gp) {
+    public SuperEnemy(GamePanel gp, String spriteName, int minCol, int maxCol, int minRow, int maxRow) {
         super(gp);
 
-        name = "Little Kid";
-        type = 1;
+        this.minCol = minCol;
+        this.maxCol = maxCol;
+        this.minRow = minRow;
+        this.maxRow = maxRow;
 
-        speed = 2;
+        name = spriteName;
+        speed = 3;
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        getImage();
+        getImage(spriteName);
     }
 
-    public void getImage(){
-        up1 = setUp("enemies/seagullUp");
-        up2 = setUp("enemies/seagullUp");
-        down1 = setUp("enemies/seagullDown");
-        down2 = setUp("enemies/seagullDown");
-        left1 = setUp("enemies/seagullLeft");
-        left2 = setUp("enemies/seagullLeft");
-        right1 = setUp("enemies/seagullRight");
-        right2 = setUp("enemies/seagullRight");
+    public void getImage(String spriteName) {
+        up1    = setUp("enemies/" + spriteName + "Up");
+        up2    = setUp("enemies/" + spriteName + "Up");
+        down1  = setUp("enemies/" + spriteName + "Down");
+        down2  = setUp("enemies/" + spriteName + "Down");
+        left1  = setUp("enemies/" + spriteName + "Left");
+        left2  = setUp("enemies/" + spriteName + "Left");
+        right1 = setUp("enemies/" + spriteName + "Right");
+        right2 = setUp("enemies/" + spriteName + "Right");
     }
 
     public void update() {
@@ -48,24 +51,24 @@ public class ENEMY_seagull extends Entity {
         int currentCol = worldX / gp.tileSize;
         int currentRow = worldY / gp.tileSize;
 
-        if (currentCol < MIN_COL) {
-            worldX = MIN_COL * gp.tileSize;
+        if (currentCol < minCol) {
+            worldX = minCol * gp.tileSize;
             direction = "right";
             // nudge vertically so they don't stack
             worldY += (random.nextInt(3) - 1) * gp.tileSize;
         }
-        if (currentCol > MAX_COL) {
-            worldX = MAX_COL * gp.tileSize;
+        if (currentCol > maxCol) {
+            worldX = maxCol * gp.tileSize;
             direction = "left";
             worldY += (random.nextInt(3) - 1) * gp.tileSize;
         }
-        if (currentRow < MIN_ROW) {
-            worldY = MIN_ROW * gp.tileSize;
+        if (currentRow < minRow) {
+            worldY = minRow * gp.tileSize;
             direction = "down";
             worldX += (random.nextInt(3) - 1) * gp.tileSize;
         }
-        if (currentRow > MAX_ROW) {
-            worldY = MAX_ROW * gp.tileSize;
+        if (currentRow > maxRow) {
+            worldY = maxRow * gp.tileSize;
             direction = "up";
             worldX += (random.nextInt(3) - 1) * gp.tileSize;
         }
@@ -97,8 +100,8 @@ public class ENEMY_seagull extends Entity {
         // check if player is still on the beach (sand area)
         int playerCol = gp.player.worldX / gp.tileSize;
         int playerRow = gp.player.worldY / gp.tileSize;
-        boolean playerOnBeach = playerCol >= MIN_COL && playerCol <= MAX_COL
-                && playerRow >= MIN_ROW  && playerRow <= MAX_ROW;
+        boolean playerOnBeach = playerCol >= minCol && playerCol <= maxCol
+                && playerRow >= minRow && playerRow <= maxRow;
 
         if (!onPath && tileDistance < 20 && playerOnBeach) onPath = true;
         if (onPath && (tileDistance > 30 || !playerOnBeach)) onPath = false;
@@ -113,7 +116,6 @@ public class ENEMY_seagull extends Entity {
 
             if (actionLockCounter == 120) {
 
-                Random random = new Random();
                 int i = random.nextInt(100) + 1;
 
                 if (i < 25) {
