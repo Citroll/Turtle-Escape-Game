@@ -88,12 +88,12 @@ public class IceCreamManager {
         if (spawnTimer >= ICE_CREAM_SPAWN_INTERVAL) {
             spawnTimer = 0;
 
-            if (gp.obj[1] == null && !iceCreamCollected) {
+            if (gp.obj[1] == null && !iceCreamCollected && Math.random() < 0.5) {
                 placeIceCream(11, 16, 1);
                 iceCreamLife = ICE_CREAM_LIFETIME;
             }
 
-            if (gp.obj[2] == null && !iceCream2Collected) {
+            if (gp.obj[2] == null && !iceCream2Collected && Math.random() < 0.5) {
                 placeIceCream(13, 3, 2);
                 iceCreamLife2 = ICE_CREAM_LIFETIME;
             }
