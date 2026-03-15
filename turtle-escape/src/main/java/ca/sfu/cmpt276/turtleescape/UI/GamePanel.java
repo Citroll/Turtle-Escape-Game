@@ -237,6 +237,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      * timers, etc.
      */
     public void update() {
+        GameState stateAtStart = gameState;
+
         if (keyH.escapePressed && gameState == GameState.PLAYING) {
             gameState = GameState.PAUSED;
             keyH.escapePressed = false;
@@ -253,6 +255,13 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
             iceCreamManager.update();
             tileM.update();
+        }
+
+        if (gameState == GameState.DEAD && stateAtStart != GameState.DEAD) {
+            stopMusic();
+            stopMoveSE();
+            se.stop();
+            playSE(4);
         }
     }
 
@@ -375,6 +384,18 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     /**
+     * plays a one-shot sound effect from the sound url array at a custom volume.
+     *
+     * @param i the index of the sound effect in the sound url array
+     * @param volume a float from 0.0 (silent) to 1.0 (full volume)
+     */
+    public void playSE(int i, float volume) {
+        se.setFile(i);
+        se.setVolume(volume);
+        se.play();
+    }
+
+    /**
      * plays a looping movement sound effect (walk/swim) from the sound url array.
      *
      * @param i the index of the movement sound in the sound url array
@@ -399,6 +420,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      * objects and enemies, resets the ice cream manager and UI timer.
      */
     public void restartGame() {
+        // reset audio state
+        stopMusic();
+        stopMoveSE();
+        se.stop();
+
         // reset player
         player.setDefaultValues();
         player.score = 0;
@@ -414,6 +440,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         // reset UI timer
         ui.playTime = 0;
+
+        // restart background music
+        playMusic(0);
 
         gameState = GameState.PLAYING;
     }

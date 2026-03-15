@@ -24,6 +24,8 @@ public class Sound {
         soundURL[1] = getClass().getClassLoader().getResource("sound/pickup.wav");
         soundURL[2] = getClass().getClassLoader().getResource("sound/walk.wav");
         soundURL[3] = getClass().getClassLoader().getResource("sound/swim.wav");
+        soundURL[4] = getClass().getClassLoader().getResource("sound/death.wav");
+        soundURL[5] = getClass().getClassLoader().getResource("sound/hurt.wav");
     }
 
     /**

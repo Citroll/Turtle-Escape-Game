@@ -15,6 +15,7 @@ public abstract class SuperPunishment extends SuperObject {
      */
     public void applyPunishment(GamePanel gp) {
         gp.player.score -= penalty;
+        gp.playSE(5, 0.85f);
         gp.ui.triggerFlash();
         gp.obj[findIndex(gp)] = null; // remove from map after hit
     }
