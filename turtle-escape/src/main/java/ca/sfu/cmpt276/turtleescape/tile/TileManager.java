@@ -68,17 +68,19 @@ public class TileManager {
     public void getTileImage() {
         //BACKGROUND MAP
         setUp(0, "tiles/sand", false); //0, sand
-        setUp(1, "tiles/sandwater1", false); //1, wateredge1
-        setUp(2, "tiles/sandwater2", false); //2, wateredge2
-        //3, wateredgeflipped1
-        //4, wateredgeflipped2
-        setUp(5, "tiles/water1", false);//5, water1
-        setUp(6, "tiles/water2", false);//6, water2
-        //7, deepwateredge1
-        //8, deepwateredge2
-        //9, deepwateredgeflipped1
-        //10, deepwateredgeflipped2
-
+        setUp(1, "tiles/sandwater1", false); //1, sandwater1
+        setUp(2, "tiles/sandwater2", false); //2, sandwater2
+        setUp(3, "tiles/sandwaterflipped1", false); //3, sandwaterflipped1
+        setUp(4, "tiles/sandwaterflipped2", false); //4, sandwaterflipped2
+        setUp(5, "tiles/water1", false); //5, water1
+        setUp(6, "tiles/water2", false); //6, water2
+        setUp(7, "tiles/deepwater1", false); //7, deepwater1
+        setUp(8, "tiles/deepwater2", false);//8, deepwater2
+        setUp(9, "tiles/deepwateredge1", false); //9, deepwateredge1
+        setUp(10, "tiles/deepwateredge2", false); //10, deepwateredge2
+        setUp(11, "tiles/deepwateredgeflipped1", false); //11, deepwateredgeflipped1
+        setUp(12, "tiles/deepwateredgeflipped2", false); //12, deepwateredgeflipped2
+        setUp(13, "tiles/sandflipped", false); //sand, flipped
 
 
         //BARRIERS
@@ -168,8 +170,12 @@ public class TileManager {
 
             int tileNum = mapTileNum[worldCol][worldRow];
 
-            if(tileNum == 1 && animationFrame == 1) tileNum = 2; //sand+water
+            if(tileNum == 1 && animationFrame == 1) tileNum = 2; //sandwater
+            if(tileNum == 3 && animationFrame == 1) tileNum = 4; //sandwaterflipped
             if(tileNum == 5 && animationFrame == 1) tileNum = 6; //water
+            if(tileNum == 7 && animationFrame == 1) tileNum = 8; //deepwater
+            if(tileNum == 9 && animationFrame == 1) tileNum = 10; //deepwateredge
+            if(tileNum == 11 && animationFrame == 1) tileNum = 12; //deepwateredgeflipped
             if(tileNum == 22 && animationFrame == 1) tileNum = 23; //buoy
 
             int worldX = worldCol * gp.tileSize;

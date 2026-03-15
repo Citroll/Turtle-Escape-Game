@@ -1,10 +1,9 @@
 package ca.sfu.cmpt276.turtleescape.entity;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
@@ -194,6 +193,7 @@ public class Player extends Entity {
             }
         }
 
+        /*
         // add at the end of update()
         int playerCol = worldX / gp.tileSize;
         int playerRow = worldY / gp.tileSize;
@@ -201,7 +201,7 @@ public class Player extends Entity {
         // trigger win when player reaches the water ()
         if (playerCol >= 32) {
             gp.gameState = GamePanel.GameState.WIN;
-        }
+        }*/
     }
 
     /**
