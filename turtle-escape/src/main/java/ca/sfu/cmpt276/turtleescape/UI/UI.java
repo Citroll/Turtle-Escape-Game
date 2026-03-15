@@ -30,6 +30,10 @@ public class UI {
     private int flashTimer = 0;
     private final int flashDuration = 20;
 
+    /** Score collected green flash*/
+    private int greenFlashTimer = 0;
+    private final int greenFlashDuration = 20;
+
     /**
      * Represents the UI for the game
      * Handles the display settings for the score and timer
@@ -194,6 +198,23 @@ public class UI {
     }
 
     /**
+     * Overlays a green screen that slowly fades away when the player interacts
+     * with a punishment.
+     *
+     * @param g2     the Graphics2D context used for rendering
+     * @param width  the current width of the panel
+     * @param height the current height of the panel
+     */
+    public void drawGreenFlash(Graphics2D g2, int width, int height) {
+        if (greenFlashTimer > 0) {
+            float fade = (float) greenFlashTimer / greenFlashDuration;
+            g2.setColor(new Color(0, 255, 0, (int)(120 * fade)));
+            g2.fillRect(0, 0, width, height);
+            greenFlashTimer--;
+        }
+    }
+
+    /**
      * Handles mouse clicks for UI elements based on the current game state.
      *
      * @param e     the MouseEvent containing click coordinates
@@ -218,5 +239,10 @@ public class UI {
     // redFlash helper
     public void triggerFlash() {
         flashTimer = flashDuration;
+    }
+
+    // GreenFlash helper
+    public void triggerGreenFlash() {
+        greenFlashTimer = greenFlashDuration;
     }
 }

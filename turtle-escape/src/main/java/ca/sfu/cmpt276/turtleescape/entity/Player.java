@@ -227,6 +227,7 @@ public class Player extends Entity {
                         score += 100;
                         gp.obj[index] = null;
                         gp.playSE(1);
+                        gp.ui.triggerGreenFlash();
                         break;
                     case "IceCream":
                         score += 250;
@@ -238,6 +239,7 @@ public class Player extends Entity {
                         }
                         gp.obj[index] = null;
                         gp.playSE(1);
+                        gp.ui.triggerGreenFlash();
                         break;
                 }
             }
