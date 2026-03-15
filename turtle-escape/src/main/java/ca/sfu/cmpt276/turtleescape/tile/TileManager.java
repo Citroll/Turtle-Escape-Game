@@ -103,7 +103,8 @@ public class TileManager {
         setUp(20, "tiles/tree", true); //20, tree
         setUp(21, "tiles/castle", true); //21, sandcastle
         setUp(22, "tiles/buoy", true); //22, buoy
-        setUp(24, "tiles/coral", true); //23, coral
+        setUp(24, "tiles/coral", true); //24, coral
+        setUp(25, "tiles/egg", true); //25, egg
         //25, sunkenboat
     }
 
@@ -133,31 +134,17 @@ public class TileManager {
      * Reads the base map layout from world01.txt and populates mapTileNum.
      * Uses whitespace-tolerant parsing so map files can use any spacing.
      */
-    public void loadMap(){
+    public void loadMap() {
         try {
             InputStream is = getClass().getResourceAsStream("/maps/world01.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-            int col = 0;
-            int row = 0;
-
-            while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
-                String line = br.readLine();
-
-                while(col < gp.maxWorldCol) {
-                    String[] numbers = line.trim().split("\\s+"); // handles any amount of whitespace
-
-                    int num = Integer.parseInt(numbers[col]);
-
-                    mapTileNum[col][row] = num;
-                    col++;
-                }
-                if(col == gp.maxWorldCol){
-                    col = 0;
-                    row++;
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                String[] numbers = br.readLine().trim().split("\\s+");
+                for (int col = 0; col < gp.maxWorldCol; col++) {
+                    mapTileNum[col][row] = Integer.parseInt(numbers[col]);
                 }
             }
-
             br.close();
 
         } catch (Exception e){
@@ -177,19 +164,11 @@ public class TileManager {
             if (is == null) return; // overlay file is optional
 
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            int col = 0;
-            int row = 0;
 
-            while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
-                String line = br.readLine();
-                while (col < gp.maxWorldCol) {
-                    String[] numbers = line.trim().split("\\s+");
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                String[] numbers = br.readLine().trim().split("\\s+");
+                for (int col = 0; col < gp.maxWorldCol; col++) {
                     mapOverlayNum[col][row] = Integer.parseInt(numbers[col]);
-                    col++;
-                }
-                if (col == gp.maxWorldCol) {
-                    col = 0;
-                    row++;
                 }
             }
             br.close();
