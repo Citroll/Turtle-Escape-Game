@@ -52,7 +52,7 @@ public class Button {
         g2.fillRect(x, y, width, height);
 
         g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        g2.setFont(new Font("Monospaced", Font.BOLD, 24));
         int textWidth = g2.getFontMetrics().stringWidth(text);
         int textX = x + (width - textWidth) / 2;
         int textY = y + height / 2 + 8;
