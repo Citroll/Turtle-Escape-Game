@@ -46,7 +46,7 @@ public class UI {
     public UI(GamePanel gp) {
         this.gp = gp;
 
-        font = new Font("Arial", Font.PLAIN, 50);
+        font = new Font("Monospaced", Font.BOLD, 50);
         playButton = new Button(0, 0, 200, 50, "PLAY", () -> gp.gameState = GamePanel.GameState.PLAYING);
         resumeButton = new Button(0, 0, 200, 50, "RESUME", () -> gp.gameState = GamePanel.GameState.PLAYING);
         restartButton = new Button(0, 0, 200, 50, "RESTART", () -> gp.restartGame());
@@ -108,7 +108,7 @@ public class UI {
         g2.fillRect(0, 0, width, height);
 
         // Set font for title
-        g2.setFont(new Font("Arial", Font.BOLD, 48));
+        g2.setFont(new Font("Monospaced", Font.BOLD, 48));
         g2.setColor(Color.WHITE);
 
         // Draw title
@@ -140,7 +140,7 @@ public class UI {
         g2.fillRect(0, 0, width, height);
 
         // Draw "PAUSED" text
-        g2.setFont(new Font("Arial", Font.BOLD, 48));
+        g2.setFont(new Font("Monospaced", Font.BOLD, 48));
         g2.setColor(Color.WHITE);
         String pausedText = "PAUSED";
         int textWidth = g2.getFontMetrics().stringWidth(pausedText);
@@ -170,7 +170,7 @@ public class UI {
         g2.setColor(new Color(0, 0, 0, 180));
         g2.fillRect(0, 0, width, height);
 
-        g2.setFont(new Font("Arial", Font.BOLD, 64));
+        g2.setFont(new Font("Monospaced", Font.BOLD, 64));
         g2.setColor(Color.RED);
         String text = "YOU DIED";
         int textWidth = g2.getFontMetrics().stringWidth(text);
@@ -188,13 +188,13 @@ public class UI {
         g2.setColor(new Color(0, 0, 0, 180));
         g2.fillRect(0, 0, width, height);
 
-        g2.setFont(new Font("Arial", Font.BOLD, 64));
+        g2.setFont(new Font("Monospaced", Font.BOLD, 64));
         g2.setColor(Color.GREEN);
         String title = "YOU ESCAPED!";
         int titleWidth = g2.getFontMetrics().stringWidth(title);
         g2.drawString(title, (width - titleWidth) / 2, height / 2 - 80);
 
-        g2.setFont(new Font("Arial", Font.BOLD, 36));
+        g2.setFont(new Font("Monospaced", Font.BOLD, 36));
         g2.setColor(Color.WHITE);
         String scoreText = "Score: " + gp.player.score;
         int scoreWidth = g2.getFontMetrics().stringWidth(scoreText);
