@@ -44,6 +44,9 @@ public class AssetSetter {
         placeJellyfish(77, 17, 11);
         placeJellyfish(28, 20, 12);
 
+        placeSeaweed(4, 16, 22);
+        placeSeaweed(7, 19, 23);
+
         placeShrimp(56, 6, 13);
         placeShrimp(55, 10, 14);
         placeShrimp(67, 16, 15);
