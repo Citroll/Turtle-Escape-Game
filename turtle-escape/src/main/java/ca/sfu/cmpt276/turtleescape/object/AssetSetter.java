@@ -37,13 +37,23 @@ public class AssetSetter {
         // slot 1 = icecream
         placeKid(11, 15, 5);
         placeKid(13, 2, 6);
-//        placeJellyfish(7, 5, );
-//        placeShrimp(9, 5,  );
-//
-//        //PUNISHMENTS
-//        placePlasticBag(11, 5, );
-//        placePlasticBottle(13, 5, );
-//        placeHook(15, 5, );
+        placeJellyfish(28, 1, 7);
+        placeJellyfish(80, 2, 8);
+        placeJellyfish(84, 3, 9);
+        placeJellyfish(41, 5, 10);
+        placeJellyfish(77, 17, 11);
+        placeJellyfish(28, 20, 12);
+
+        placeShrimp(56, 6, 13);
+        placeShrimp(55, 10, 14);
+        placeShrimp(67, 16, 15);
+
+        placePlasticBottle(73, 4, 16);
+        placeHook(65, 10, 17);
+        placePlasticBottle(35, 12, 18);
+        placeHook(53, 15, 19);
+        placePlasticBag(78, 16, 20);
+        placePlasticBottle(22, 19, 21);
     }
 
     //ENEMIES
@@ -67,6 +77,10 @@ public class AssetSetter {
         gp.enemy[4] = new SuperEnemy(gp, "shark", 45, 73, 1, 21);
         gp.enemy[4].worldX = gp.tileSize * 55;
         gp.enemy[4].worldY = gp.tileSize * 14;
+
+        gp.enemy[5] = new SuperEnemy(gp, "crab", 75, 87, 1, 21);
+        gp.enemy[5].worldX = gp.tileSize * 80;
+        gp.enemy[5].worldY = gp.tileSize * 14;
 
     }
 
