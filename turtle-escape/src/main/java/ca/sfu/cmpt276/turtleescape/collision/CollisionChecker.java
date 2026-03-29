@@ -16,9 +16,9 @@ public class CollisionChecker {
     // checks if an entity would collide with a solid tile in their movement direction
     public void checkTile(Entity entity) {
         int entityLeftX   = entity.worldX + entity.solidArea.x;
-        int entityRightX  = entity.worldX + entity.solidArea.x + entity.solidArea.width;
+        int entityRightX  = entity.worldX + entity.solidArea.x + entity.solidArea.width - 1;
         int entityTopY    = entity.worldY + entity.solidArea.y;
-        int entityBottomY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
+        int entityBottomY = entity.worldY + entity.solidArea.y + entity.solidArea.height - 1;
 
         int entityLeftCol   = entityLeftX / gp.tileSize;
         int entityRightCol  = entityRightX / gp.tileSize;
