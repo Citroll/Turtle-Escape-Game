@@ -1,9 +1,9 @@
 package ca.sfu.cmpt276.turtleescape.enemy;
 
+import java.util.Random;
+
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 import ca.sfu.cmpt276.turtleescape.entity.Entity;
-
-import java.util.Random;
 
 public class SuperEnemy extends Entity {
 
@@ -17,13 +17,15 @@ public class SuperEnemy extends Entity {
 
     private final Random random = new Random();
 
-    public SuperEnemy(GamePanel gp, String spriteName, int minCol, int maxCol, int minRow, int maxRow) {
+    public SuperEnemy(GamePanel gp, String spriteName, int minCol, int maxCol, int minRow, int maxRow, int tileSizeX, int tileSizeY) {
         super(gp);
 
         this.minCol = minCol;
         this.maxCol = maxCol;
         this.minRow = minRow;
         this.maxRow = maxRow;
+        this.worldX = gp.tileSize * tileSizeX;
+        this.worldY = gp.tileSize * tileSizeY;
 
         name = spriteName;
         speed = 3;

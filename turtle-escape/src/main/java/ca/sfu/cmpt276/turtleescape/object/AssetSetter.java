@@ -61,30 +61,17 @@ public class AssetSetter {
 
     //ENEMIES
     public void setMonster() {
-        gp.enemy[0] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21);
-        gp.enemy[0].worldX = gp.tileSize * 14;
-        gp.enemy[0].worldY = gp.tileSize * 7;
+        gp.enemy[0] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21, 14, 7);
 
-        gp.enemy[1] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21);
-        gp.enemy[1].worldX = gp.tileSize * 14;
-        gp.enemy[1].worldY = gp.tileSize * 20;
+        gp.enemy[1] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21, 14, 20);
 
-        gp.enemy[2] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21);
-        gp.enemy[2].worldX = gp.tileSize * 14;
-        gp.enemy[2].worldY = gp.tileSize * 14;
+        gp.enemy[2] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21, 14, 14);
 
-        gp.enemy[3] = new SuperEnemy(gp, "crab", 21, 44, 1, 21);
-        gp.enemy[3].worldX = gp.tileSize * 30;
-        gp.enemy[3].worldY = gp.tileSize * 14;
+        gp.enemy[3] = new SuperEnemy(gp, "crab", 21, 44, 1, 21, 30, 14);
 
-        gp.enemy[4] = new SuperEnemy(gp, "shark", 45, 73, 1, 21);
-        gp.enemy[4].worldX = gp.tileSize * 55;
-        gp.enemy[4].worldY = gp.tileSize * 14;
+        gp.enemy[4] = new SuperEnemy(gp, "shark", 45, 73, 1, 21, 55, 14);
 
-        gp.enemy[5] = new SuperEnemy(gp, "crab", 75, 87, 1, 21);
-        gp.enemy[5].worldX = gp.tileSize * 80;
-        gp.enemy[5].worldY = gp.tileSize * 14;
-
+        gp.enemy[5] = new SuperEnemy(gp, "crab", 75, 87, 1, 21, 80, 14);
     }
 
     //NPCS
