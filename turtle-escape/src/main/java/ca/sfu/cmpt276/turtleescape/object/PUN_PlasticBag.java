@@ -12,10 +12,11 @@ import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
  */
 public class PUN_PlasticBag extends SuperPunishment {
 
-
-    public PUN_PlasticBag(GamePanel gp) {
+    public PUN_PlasticBag(GamePanel gp, int tileSizeX, int tileSizeY) {
 
         this.gp = gp;
+        this.worldX = gp.tileSize * tileSizeX;
+        this.worldY = gp.tileSize * tileSizeY;
 
         name = "PlasticBag";
         penalty = 100;

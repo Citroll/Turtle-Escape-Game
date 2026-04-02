@@ -30,7 +30,7 @@ public class AssetSetter {
      * layout.
      */
     public void setObject() {
-        //OBJECTIVES
+        // OBJECTIVES
         placeSeaweed(5, 2, 0);
         placeSeaweed(7, 2, 3);
         placeSeaweed(9, 2, 4);
@@ -59,76 +59,49 @@ public class AssetSetter {
         placePlasticBottle(22, 19, 21);
     }
 
-    //ENEMIES
+    // ENEMIES
     public void setMonster() {
-        gp.enemy[0] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21);
-        gp.enemy[0].worldX = gp.tileSize * 14;
-        gp.enemy[0].worldY = gp.tileSize * 7;
+        gp.enemy[0] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21, 14, 7);
 
-        gp.enemy[1] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21);
-        gp.enemy[1].worldX = gp.tileSize * 14;
-        gp.enemy[1].worldY = gp.tileSize * 20;
+        gp.enemy[1] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21, 14, 20);
 
-        gp.enemy[2] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21);
-        gp.enemy[2].worldX = gp.tileSize * 14;
-        gp.enemy[2].worldY = gp.tileSize * 14;
+        gp.enemy[2] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21, 14, 14);
 
-        gp.enemy[3] = new SuperEnemy(gp, "crab", 21, 44, 1, 21);
-        gp.enemy[3].worldX = gp.tileSize * 30;
-        gp.enemy[3].worldY = gp.tileSize * 14;
+        gp.enemy[3] = new SuperEnemy(gp, "crab", 21, 44, 1, 21, 30, 14);
 
-        gp.enemy[4] = new SuperEnemy(gp, "shark", 45, 73, 1, 21);
-        gp.enemy[4].worldX = gp.tileSize * 55;
-        gp.enemy[4].worldY = gp.tileSize * 14;
+        gp.enemy[4] = new SuperEnemy(gp, "shark", 45, 73, 1, 21, 55, 14);
 
-        gp.enemy[5] = new SuperEnemy(gp, "crab", 75, 87, 1, 21);
-        gp.enemy[5].worldX = gp.tileSize * 80;
-        gp.enemy[5].worldY = gp.tileSize * 14;
-
+        gp.enemy[5] = new SuperEnemy(gp, "crab", 75, 87, 1, 21, 80, 14);
     }
 
-    //NPCS
+    // NPCS
     private void placeKid(int col, int row, int slot) {
-        gp.obj[slot] = new NPC_Kid(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new NPC_Kid(gp, col, row);
     }
 
-    //REWARDS
+    // REWARDS
     private void placeSeaweed(int col, int row, int slot) {
-        gp.obj[slot] = new OBJ_Seaweed(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new OBJ_Seaweed(gp, col, row);
     }
 
     private void placeShrimp(int col, int row, int slot) {
-        gp.obj[slot] = new OBJ_Shrimp(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new OBJ_Shrimp(gp, col, row);
     }
 
     private void placeJellyfish(int col, int row, int slot) {
-        gp.obj[slot] = new OBJ_Jellyfish(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new OBJ_Jellyfish(gp, col, row);
     }
 
-    //PUNISHMENTS
+    // PUNISHMENTS
     private void placePlasticBag(int col, int row, int slot) {
-        gp.obj[slot] = new PUN_PlasticBag(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new PUN_PlasticBag(gp, col, row);
     }
 
     private void placePlasticBottle(int col, int row, int slot) {
-        gp.obj[slot] = new PUN_PlasticBottle(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new PUN_PlasticBottle(gp, col, row);
     }
 
     private void placeHook(int col, int row, int slot) {
-        gp.obj[slot] = new PUN_Hook(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new PUN_Hook(gp, col, row);
     }
 }

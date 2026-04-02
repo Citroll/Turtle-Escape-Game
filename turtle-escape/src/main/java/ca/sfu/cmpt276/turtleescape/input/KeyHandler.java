@@ -9,11 +9,8 @@ import java.awt.event.KeyListener;
  * Movement keys are WASD.
  */
 public class KeyHandler implements KeyListener {
-
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
-
-    /** Flag for escape key press (used for pausing) */
-    public boolean escapePressed;
+    // Boolean variables that contain press state of a key
+    public boolean upPressed, downPressed, leftPressed, rightPressed, escapePressed;
 
     /**
      * Not used. Required by KeyListener interface.
@@ -31,22 +28,22 @@ public class KeyHandler implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        int code = e.getKeyCode(); // Gets key number of key pressed and stores it
-
-        if (code == KeyEvent.VK_W) { // If user press W key
-            upPressed = true;
-        }
-        if (code == KeyEvent.VK_A) { // If user press A Key
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_S) { // If user press S Key
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_D) { // If user press D Key
-            rightPressed = true;
-        }
-        if (code == KeyEvent.VK_ESCAPE) { // If user press ESC key
-            escapePressed = true;
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_W: // If user press W Key
+                upPressed = true;
+                break;
+            case KeyEvent.VK_A: // If user press A Key
+                leftPressed = true;
+                break;
+            case KeyEvent.VK_S: // If user press S Key
+                downPressed = true;
+                break;
+            case KeyEvent.VK_D: // If user press D Key
+                rightPressed = true;
+                break;
+            case KeyEvent.VK_ESCAPE: // If user press ESC key
+                escapePressed = true;
+                break;
         }
     }
 
@@ -58,22 +55,22 @@ public class KeyHandler implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        int code = e.getKeyCode();
-
-        if (code == KeyEvent.VK_W) { // If user press W key
-            upPressed = false;
-        }
-        if (code == KeyEvent.VK_A) { // If user press A Key
-            leftPressed = false;
-        }
-        if (code == KeyEvent.VK_S) { // If user press S Key
-            downPressed = false;
-        }
-        if (code == KeyEvent.VK_D) { // If user press D Key
-            rightPressed = false;
-        }
-        if (code == KeyEvent.VK_ESCAPE) { // If user press ESC key
-            escapePressed = false;
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_W: // If user release W Key
+                upPressed = false;
+                break;
+            case KeyEvent.VK_A: // If user release A Key
+                leftPressed = false;
+                break;
+            case KeyEvent.VK_S: // If user release S Key
+                downPressed = false;
+                break;
+            case KeyEvent.VK_D: // If user release D Key
+                rightPressed = false;
+                break;
+            case KeyEvent.VK_ESCAPE: // If user release ESC key
+                escapePressed = false;
+                break;
         }
     }
 }

@@ -13,12 +13,15 @@ import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 public class OBJ_Jellyfish extends SuperObject {
 
     GamePanel gp;
+
     /**
      * Constructs a jellyfish reward and loads its sprite image.
      */
-    public OBJ_Jellyfish(GamePanel gp) {
+    public OBJ_Jellyfish(GamePanel gp, int tileSizeX, int tileSizeY) {
 
         this.gp = gp;
+        this.worldX = gp.tileSize * tileSizeX;
+        this.worldY = gp.tileSize * tileSizeY;
 
         name = "Jellyfish";
         try {

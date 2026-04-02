@@ -13,12 +13,15 @@ import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 public class OBJ_Shrimp extends SuperObject {
 
     GamePanel gp;
+
     /**
      * Constructs a Shrimp reward and loads its sprite image.
      */
-    public OBJ_Shrimp(GamePanel gp) {
+    public OBJ_Shrimp(GamePanel gp, int tileSizeX, int tileSizeY) {
 
         this.gp = gp;
+        this.worldX = gp.tileSize * tileSizeX;
+        this.worldY = gp.tileSize * tileSizeY;
 
         name = "Shrimp";
         try {
