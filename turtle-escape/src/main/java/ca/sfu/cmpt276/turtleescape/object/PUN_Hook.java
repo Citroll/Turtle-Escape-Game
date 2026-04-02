@@ -6,10 +6,12 @@ import javax.imageio.ImageIO;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 
-public class PUN_Hook extends SuperPunishment{
-    public PUN_Hook(GamePanel gp) {
+public class PUN_Hook extends SuperPunishment {
+    public PUN_Hook(GamePanel gp, int tileSizeX, int tileSizeY) {
 
         this.gp = gp;
+        this.worldX = gp.tileSize * tileSizeX;
+        this.worldY = gp.tileSize * tileSizeY;
 
         name = "Hook";
         penalty = 200;

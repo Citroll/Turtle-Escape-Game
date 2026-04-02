@@ -6,10 +6,12 @@ import javax.imageio.ImageIO;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 
-public class PUN_PlasticBottle extends SuperPunishment{
-    public PUN_PlasticBottle(GamePanel gp) {
+public class PUN_PlasticBottle extends SuperPunishment {
+    public PUN_PlasticBottle(GamePanel gp, int tileSizeX, int tileSizeY) {
 
         this.gp = gp;
+        this.worldX = gp.tileSize * tileSizeX;
+        this.worldY = gp.tileSize * tileSizeY;
 
         name = "WaterBottle";
         penalty = 200;
