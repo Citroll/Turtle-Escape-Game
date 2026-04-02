@@ -6,6 +6,8 @@ import ca.sfu.cmpt276.turtleescape.entity.Entity;
 public class CollisionChecker {
     // reference to the main game panel
     GamePanel gp;
+    // code smell fixed
+    private static final int NO_CONTACT = 999;
     
     // constructor stores the game panel reference
     public CollisionChecker(GamePanel gp) {
@@ -104,8 +106,8 @@ public class CollisionChecker {
      */
     public int checkObject(Entity entity, boolean isPlayer) {
 
-        // 999 means no object was touched
-        int index = 999;
+        // code smell fixed
+        int index = NO_CONTACT;
 
         // loop through every object slot in the array
         for (int i = 0; i < gp.obj.length; i++) {
@@ -153,8 +155,8 @@ public class CollisionChecker {
 
 
     public int checkEntity(Entity entity, Entity[] target){
-        // 999 means no object was touched
-        int index = 999;
+        // code smell fixed
+        int index = NO_CONTACT;
 
         // loop through every object slot in the array
         for (int i = 0; i < target.length; i++) {
