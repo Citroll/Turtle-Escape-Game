@@ -30,7 +30,7 @@ public class AssetSetter {
      * layout.
      */
     public void setObject() {
-        //OBJECTIVES
+        // OBJECTIVES
         placeSeaweed(5, 2, 0);
         placeSeaweed(7, 2, 3);
         placeSeaweed(9, 2, 4);
@@ -59,7 +59,7 @@ public class AssetSetter {
         placePlasticBottle(22, 19, 21);
     }
 
-    //ENEMIES
+    // ENEMIES
     public void setMonster() {
         gp.enemy[0] = new SuperEnemy(gp, "seagull", 1, 20, 1, 21, 14, 7);
 
@@ -74,48 +74,34 @@ public class AssetSetter {
         gp.enemy[5] = new SuperEnemy(gp, "crab", 75, 87, 1, 21, 80, 14);
     }
 
-    //NPCS
+    // NPCS
     private void placeKid(int col, int row, int slot) {
-        gp.obj[slot] = new NPC_Kid(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new NPC_Kid(gp, col, row);
     }
 
-    //REWARDS
+    // REWARDS
     private void placeSeaweed(int col, int row, int slot) {
-        gp.obj[slot] = new OBJ_Seaweed(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new OBJ_Seaweed(gp, col, row);
     }
 
     private void placeShrimp(int col, int row, int slot) {
-        gp.obj[slot] = new OBJ_Shrimp(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new OBJ_Shrimp(gp, col, row);
     }
 
     private void placeJellyfish(int col, int row, int slot) {
-        gp.obj[slot] = new OBJ_Jellyfish(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new OBJ_Jellyfish(gp, col, row);
     }
 
-    //PUNISHMENTS
+    // PUNISHMENTS
     private void placePlasticBag(int col, int row, int slot) {
-        gp.obj[slot] = new PUN_PlasticBag(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new PUN_PlasticBag(gp, col, row);
     }
 
     private void placePlasticBottle(int col, int row, int slot) {
-        gp.obj[slot] = new PUN_PlasticBottle(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new PUN_PlasticBottle(gp, col, row);
     }
 
     private void placeHook(int col, int row, int slot) {
-        gp.obj[slot] = new PUN_Hook(gp);
-        gp.obj[slot].worldX = col * gp.tileSize;
-        gp.obj[slot].worldY = row * gp.tileSize;
+        gp.obj[slot] = new PUN_Hook(gp, col, row);
     }
 }
