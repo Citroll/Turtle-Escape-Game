@@ -1,7 +1,7 @@
 package ca.sfu.cmpt276.turtleescape.integration;
 
 import ca.sfu.cmpt276.turtleescape.object.IceCreamManager;
-import ca.sfu.cmpt276.turtleescape.Sound;
+import ca.sfu.cmpt276.turtleescape.audio.Sound;
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 import ca.sfu.cmpt276.turtleescape.ai.Pathfinder;
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;

@@ -9,7 +9,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-import ca.sfu.cmpt276.turtleescape.Sound;
+import ca.sfu.cmpt276.turtleescape.audio.AudioManager;
+import ca.sfu.cmpt276.turtleescape.audio.Sound;
 import ca.sfu.cmpt276.turtleescape.ai.Pathfinder;
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
 import ca.sfu.cmpt276.turtleescape.entity.Entity;
@@ -86,8 +87,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     public final int maxWorldCol = 100;
     public final int maxWorldRow = 22;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
+
 
     /**
      * The thread that runs the game loop. Starting it calls run() automatically
@@ -136,21 +136,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      */
 
     public IceCreamManager iceCreamManager = new IceCreamManager(this);
-     
-    /**
-     * instance for bg music
-     */
-    Sound music = new Sound();
-    
-    /**
-     * sound effect instance (one shots)
-     */
-    Sound se = new Sound();
 
-    /**
-     * move sound effect
-     */
-    Sound moveSE = new Sound();
+    //(Smell 5+6 fix):
+    public AudioManager audio = new AudioManager();
+
 
     public Pathfinder pFinder = new Pathfinder(this);
 
@@ -205,8 +194,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
          */
         while (gameThread != null) {
 
-            long currentTime = System.nanoTime();
-
             // Update: Character position
             update();
 
@@ -258,9 +245,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
 
         if (gameState == GameState.DEAD && stateAtStart != GameState.DEAD) {
-            stopMusic();
-            stopMoveSE();
-            se.stop();
+            audio.stopAll();
             playSE(4);
         }
     }
@@ -354,65 +339,13 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    /**
-     * plays background music from the sound url array and loops it continuously.
-     *
-     * @param i the index of the music track in the sound url array
-     */
-    public void playMusic(int i) {
-        music.setFile(i);
-        music.play();
-        music.loop();
-        music.setVolume(0.72f);
-    }
-
-    /**
-     * stops the currently playing background music.
-     */
-    public void stopMusic() {
-        music.stop();
-    }
-
-    /**
-     * plays a one-shot sound effect from the sound url array.
-     *
-     * @param i the index of the sound effect in the sound url array
-     */
-    public void playSE(int i) {
-        se.setFile(i);
-        se.play();
-    }
-
-    /**
-     * plays a one-shot sound effect from the sound url array at a custom volume.
-     *
-     * @param i the index of the sound effect in the sound url array
-     * @param volume a float from 0.0 (silent) to 1.0 (full volume)
-     */
-    public void playSE(int i, float volume) {
-        se.setFile(i);
-        se.setVolume(volume);
-        se.play();
-    }
-
-    /**
-     * plays a looping movement sound effect (walk/swim) from the sound url array.
-     *
-     * @param i the index of the movement sound in the sound url array
-     */
-    public void playMoveSE(int i) {
-        moveSE.setFile(i);
-        moveSE.play();
-        moveSE.loop();
-    }
-
-    /**
-     * stops the currently looping movement sound effect.
-     */
-    public void stopMoveSE() {
-        moveSE.stop();
-    }
-
+    // ADD delegation methods so existing call sites still work:
+    public void playMusic(int i)          { audio.playMusic(i); }
+    public void stopMusic()               { audio.stopMusic(); }
+    public void playSE(int i)             { audio.playSE(i); }
+    public void playSE(int i, float v)    { audio.playSE(i, v); }
+    public void playMoveSE(int i)         { audio.playMoveSE(i); }
+    public void stopMoveSE()              { audio.stopMoveSE(); }
 
     /**
      * Resets the game to its initial state and transitions to the playing state.
@@ -421,9 +354,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      */
     public void restartGame() {
         // reset audio state
-        stopMusic();
-        stopMoveSE();
-        se.stop();
+        audio.stopAll();
 
         // reset player
         player.setDefaultValues();
