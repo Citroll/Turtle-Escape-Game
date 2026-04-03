@@ -1,5 +1,6 @@
 package ca.sfu.cmpt276.turtleescape.integration;
 
+import ca.sfu.cmpt276.turtleescape.audio.AudioManager;
 import ca.sfu.cmpt276.turtleescape.object.IceCreamManager;
 import ca.sfu.cmpt276.turtleescape.audio.Sound;
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
@@ -22,14 +23,6 @@ public class FakeGamePanel {
      * Sound subclass that no-ops every method.
      * Prevents playSE/playMusic/stopMoveSE from touching javax.sound at all.
      */
-    public static class NoOpSound extends Sound {
-        public NoOpSound() { /* Sound() loads WAV URLs - skip all of that */ }
-        @Override public void setFile(int i) {}
-        @Override public void play() {}
-        @Override public void loop() {}
-        @Override public void stop() {}
-        @Override public void setVolume(float v) {}
-    }
 
     public static final int COLS = 100;
     public static final int ROWS = 22;
@@ -54,10 +47,15 @@ public class FakeGamePanel {
             set(gp, GamePanel.class, "obj",      new SuperObject[50]);
             set(gp, GamePanel.class, "enemy",    new Entity[20]);
 
-            // NoOpSound replaces se/music/moveSE — no javax.sound calls ever fire
-            set(gp, GamePanel.class, "se",     new NoOpSound());
-            set(gp, GamePanel.class, "music",  new NoOpSound());
-            set(gp, GamePanel.class, "moveSE", new NoOpSound());
+            set(gp, GamePanel.class, "audio", new AudioManager() {
+                @Override public void playMusic(int i) {}
+                @Override public void stopMusic() {}
+                @Override public void playSE(int i) {}
+                @Override public void playSE(int i, float v) {}
+                @Override public void playMoveSE(int i) {}
+                @Override public void stopMoveSE() {}
+                @Override public void stopAll() {}
+            });
 
             // Stub UI so triggerGreenFlash() doesn't crash
             UI ui = (UI) allocate(UI.class);
