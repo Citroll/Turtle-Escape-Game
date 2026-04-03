@@ -9,9 +9,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-import ca.sfu.cmpt276.turtleescape.audio.AudioManager;
-import ca.sfu.cmpt276.turtleescape.audio.Sound;
 import ca.sfu.cmpt276.turtleescape.ai.Pathfinder;
+import ca.sfu.cmpt276.turtleescape.audio.AudioManager;
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
 import ca.sfu.cmpt276.turtleescape.entity.Entity;
 import ca.sfu.cmpt276.turtleescape.entity.Player;
@@ -26,7 +25,7 @@ import ca.sfu.cmpt276.turtleescape.tile.TileManager;
  * Extends JPanel to provide a drawable surface within the game window.
  * Implements Runnable to support the game loop running on a separate thread.
  */
-public class GamePanel extends JPanel implements Runnable, MouseListener {
+public class GamePanel extends JPanel implements Runnable, MouseListener, PanelSettings{
 
     /**
      * Enum representing the different states of the game
@@ -44,50 +43,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
      * Current state of the game
      */
     public GameState gameState = GameState.TITLE;
-
-    /**
-     * Target frames per second for the game loop
-     */
-    int FPS = 60;
-
-    /**
-     * The base tile size in pixels before scaling
-     */
-    final int originalTileSize = 16;
-
-    /**
-     * Scale factor applied to the original tile size
-     */
-    final int scale = 3;
-
-    /**
-     * The actual tile size after scaling (48x48 pixels)
-     */
-    public final int tileSize = originalTileSize * scale;
-
-    /**
-     * Number of tile columns on screen
-     */
-    public final int maxScreenCol = 16;
-
-    /**
-     * Number of tile rows on screen
-     */
-    public final int maxScreenRow = 12;
-
-    /**
-     * Total screen width in pixels
-     */
-    public final int screenWidth = tileSize * maxScreenCol;
-
-    /**
-     * Total screen height in pixels
-     */
-    public final int screenHeight = tileSize * maxScreenRow;
-
-    public final int maxWorldCol = 100;
-    public final int maxWorldRow = 22;
-
 
     /**
      * The thread that runs the game loop. Starting it calls run() automatically
