@@ -2,6 +2,7 @@ package ca.sfu.cmpt276.turtleescape.collision;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
 import ca.sfu.cmpt276.turtleescape.entity.Entity;
+import ca.sfu.cmpt276.turtleescape.object.SuperObject;
 
 public class CollisionChecker {
     // reference to the main game panel
@@ -27,73 +28,107 @@ public class CollisionChecker {
         int entityTopRow    = entityTopY / gp.tileSize;
         int entityBottomRow = entityBottomY / gp.tileSize;
 
-        int tileNum1, tileNum2;
-
         switch (entity.direction) {
             case "up":
                 entityTopRow = clamp((entityTopY - entity.speed) / gp.tileSize, 0, gp.maxWorldRow - 1);
                 entityLeftCol = clamp(entityLeftCol, 0, gp.maxWorldCol - 1);
                 entityRightCol = clamp(entityRightCol, 0, gp.maxWorldCol - 1);
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                    entity.collisionOn = true;
-                }
-                tileNum1 = gp.tileM.mapOverlayNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileM.mapOverlayNum[entityRightCol][entityTopRow];
-                if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) entity.collisionOn = true;
-                if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) entity.collisionOn = true;
+                // code smell fixed
+                checkBaseCollision(entityLeftCol, entityTopRow, entityRightCol, entityTopRow, entity);
+                // code smell fixed
+                checkOverlayCollision(entityLeftCol, entityTopRow, entityRightCol, entityTopRow, entity);
                 break;
 
             case "down":
                 entityBottomRow = clamp((entityBottomY + entity.speed) / gp.tileSize, 0, gp.maxWorldRow - 1);
                 entityLeftCol = clamp(entityLeftCol, 0, gp.maxWorldCol - 1);
                 entityRightCol = clamp(entityRightCol, 0, gp.maxWorldCol - 1);
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                    entity.collisionOn = true;
-                }
-                tileNum1 = gp.tileM.mapOverlayNum[entityLeftCol][entityBottomRow];
-                tileNum2 = gp.tileM.mapOverlayNum[entityRightCol][entityBottomRow];
-                if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) entity.collisionOn = true;
-                if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) entity.collisionOn = true;
+                // code smell fixed
+                checkBaseCollision(entityLeftCol, entityBottomRow, entityRightCol, entityBottomRow, entity);
+                // code smell fixed
+                checkOverlayCollision(entityLeftCol, entityBottomRow, entityRightCol, entityBottomRow, entity);
                 break;
 
             case "left":
                 entityLeftCol = clamp((entityLeftX - entity.speed) / gp.tileSize, 0, gp.maxWorldCol - 1);
                 entityTopRow = clamp(entityTopRow, 0, gp.maxWorldRow - 1);
                 entityBottomRow = clamp(entityBottomRow, 0, gp.maxWorldRow - 1);
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                    entity.collisionOn = true;
-                }
-                tileNum1 = gp.tileM.mapOverlayNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileM.mapOverlayNum[entityLeftCol][entityBottomRow];
-                if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) entity.collisionOn = true;
-                if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) entity.collisionOn = true;
+                // code smell fixed
+                checkBaseCollision(entityLeftCol, entityTopRow, entityLeftCol, entityBottomRow, entity);
+                // code smell fixed
+                checkOverlayCollision(entityLeftCol, entityTopRow, entityLeftCol, entityBottomRow, entity);
                 break;
 
             case "right":
                 entityRightCol = clamp((entityRightX + entity.speed) / gp.tileSize, 0, gp.maxWorldCol - 1);
                 entityTopRow = clamp(entityTopRow, 0, gp.maxWorldRow - 1);
                 entityBottomRow = clamp(entityBottomRow, 0, gp.maxWorldRow - 1);
-                tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                    entity.collisionOn = true;
-                }
-                tileNum1 = gp.tileM.mapOverlayNum[entityRightCol][entityTopRow];
-                tileNum2 = gp.tileM.mapOverlayNum[entityRightCol][entityBottomRow];
-                if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) entity.collisionOn = true;
-                if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) entity.collisionOn = true;
+                // code smell fixed
+                checkBaseCollision(entityRightCol, entityTopRow, entityRightCol, entityBottomRow, entity);
+                // code smell fixed
+                checkOverlayCollision(entityRightCol, entityTopRow, entityRightCol, entityBottomRow, entity);
                 break;
+        }
+    }
+
+    // code smell fixed
+    private void checkBaseCollision(int col1, int row1, int col2, int row2, Entity entity) {
+        int tileNum1 = gp.tileM.mapTileNum[col1][row1];
+        int tileNum2 = gp.tileM.mapTileNum[col2][row2];
+        if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+            entity.collisionOn = true;
+        }
+    }
+
+    // code smell fixed
+    private void checkOverlayCollision(int col1, int row1, int col2, int row2, Entity entity) {
+        int tileNum1 = gp.tileM.mapOverlayNum[col1][row1];
+        int tileNum2 = gp.tileM.mapOverlayNum[col2][row2];
+        if (tileNum1 != -1 && gp.tileM.tile[tileNum1] != null && gp.tileM.tile[tileNum1].collision) {
+            entity.collisionOn = true;
+        }
+        if (tileNum2 != -1 && gp.tileM.tile[tileNum2] != null && gp.tileM.tile[tileNum2].collision) {
+            entity.collisionOn = true;
         }
     }
 
     private int clamp(int value, int min, int max) {
         return Math.max(min, Math.min(max, value));
+    }
+
+    // code smell fixed
+    private void applyDirectionOffset(Entity entity) {
+        switch (entity.direction) {
+            case "up":    entity.solidArea.y -= entity.speed; break;
+            case "down":  entity.solidArea.y += entity.speed; break;
+            case "left":  entity.solidArea.x -= entity.speed; break;
+            case "right": entity.solidArea.x += entity.speed; break;
+            default: break;
+        }
+    }
+
+    // code smell fixed
+    private void positionSolidArea(Entity e) {
+        e.solidArea.x = e.worldX + e.solidAreaDefaultX;
+        e.solidArea.y = e.worldY + e.solidAreaDefaultY;
+    }
+
+    // code smell fixed
+    private void positionSolidArea(SuperObject o) {
+        o.solidArea.x = o.worldX + o.solidAreaDefaultX;
+        o.solidArea.y = o.worldY + o.solidAreaDefaultY;
+    }
+
+    // code smell fixed
+    private void resetSolidArea(Entity e) {
+        e.solidArea.x = e.solidAreaDefaultX;
+        e.solidArea.y = e.solidAreaDefaultY;
+    }
+
+    // code smell fixed
+    private void resetSolidArea(SuperObject o) {
+        o.solidArea.x = o.solidAreaDefaultX;
+        o.solidArea.y = o.solidAreaDefaultY;
     }
 
     /**
@@ -113,22 +148,13 @@ public class CollisionChecker {
         for (int i = 0; i < gp.obj.length; i++) {
 
             if (gp.obj[i] != null) {
+                // code smell fixed
+                positionSolidArea(entity);
+                // code smell fixed
+                positionSolidArea(gp.obj[i]);
 
-                // Get the entity's solid area position in world coords
-                entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
-
-                // Get the object's solid area position in world coords
-                gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidAreaDefaultX;
-                gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidAreaDefaultY;
-
-                // Predict movement based on direction
-                switch (entity.direction) {
-                    case "up":    entity.solidArea.y -= entity.speed; break;
-                    case "down":  entity.solidArea.y += entity.speed; break;
-                    case "left":  entity.solidArea.x -= entity.speed; break;
-                    case "right": entity.solidArea.x += entity.speed; break;
-                }
+                // code smell fixed
+                applyDirectionOffset(entity);
 
                 // check if the entity's hitbox overlaps the object's hitbox
                 if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
@@ -142,11 +168,10 @@ public class CollisionChecker {
                     }
                 }
 
-                // Reset solid areas back to defaults
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
-                gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
+                // code smell fixed
+                resetSolidArea(entity);
+                // code smell fixed
+                resetSolidArea(gp.obj[i]);
             }
         }
 
@@ -155,29 +180,20 @@ public class CollisionChecker {
 
 
     public int checkEntity(Entity entity, Entity[] target){
-        // code smell fixed
+        // code smell fixed - magic number
         int index = NO_CONTACT;
 
         // loop through every object slot in the array
         for (int i = 0; i < target.length; i++) {
 
             if (target[i] != null && target[i] != entity) {
+                // code smell fixed
+                positionSolidArea(entity);
+                // code smell fixed
+                positionSolidArea(target[i]);
 
-                // Get the entity's solid area position in world coords
-                entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
-
-                // Get the object's solid area position in world coords
-                target[i].solidArea.x = target[i].worldX + target[i].solidAreaDefaultX;
-                target[i].solidArea.y = target[i].worldY + target[i].solidAreaDefaultY;
-
-                // Predict movement based on direction
-                switch (entity.direction) {
-                    case "up":    entity.solidArea.y -= entity.speed; break;
-                    case "down":  entity.solidArea.y += entity.speed; break;
-                    case "left":  entity.solidArea.x -= entity.speed; break;
-                    case "right": entity.solidArea.x += entity.speed; break;
-                }
+                // code smell fixed
+                applyDirectionOffset(entity);
 
                 // check if the entity's hitbox overlaps the object's hitbox
                 if (entity.solidArea.intersects(target[i].solidArea)) {
@@ -185,11 +201,10 @@ public class CollisionChecker {
                     index = i;
                 }
 
-                // Reset solid areas back to defaults
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                target[i].solidArea.x = target[i].solidAreaDefaultX;
-                target[i].solidArea.y = target[i].solidAreaDefaultY;
+                // code smell fixed
+                resetSolidArea(entity);
+                // code smell fixed
+                resetSolidArea(target[i]);
             }
         }
 
@@ -200,22 +215,13 @@ public class CollisionChecker {
         boolean contactPlayer = false;
 
         if (gp.player != null) {
+            // code smell fixed
+            positionSolidArea(entity);
+            // code smell fixed
+            positionSolidArea(gp.player);
 
-            // Get the entity's solid area position in world coords
-            entity.solidArea.x = entity.worldX + entity.solidAreaDefaultX;
-            entity.solidArea.y = entity.worldY + entity.solidAreaDefaultY;
-
-            // Get the object's solid area position in world coords
-            gp.player.solidArea.x = gp.player.worldX + gp.player.solidAreaDefaultX;
-            gp.player.solidArea.y = gp.player.worldY + gp.player.solidAreaDefaultY;
-
-            // Predict movement based on direction
-            switch (entity.direction) {
-                case "up":    entity.solidArea.y -= entity.speed; break;
-                case "down":  entity.solidArea.y += entity.speed; break;
-                case "left":  entity.solidArea.x -= entity.speed; break;
-                case "right": entity.solidArea.x += entity.speed; break;
-            }
+            // code smell fixed
+            applyDirectionOffset(entity);
 
             // check if the entity's hitbox overlaps the object's hitbox
             if (entity.solidArea.intersects(gp.player.solidArea)) {
@@ -223,12 +229,28 @@ public class CollisionChecker {
                 contactPlayer = true;
             }
 
-            // Reset solid areas back to defaults
-            entity.solidArea.x = entity.solidAreaDefaultX;
-            entity.solidArea.y = entity.solidAreaDefaultY;
-            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            // code smell fixed
+            resetSolidArea(entity);
+            // code smell fixed
+            resetSolidArea(gp.player);
         }
         return contactPlayer;
+    }
+
+    public boolean checkPlayerPassive(Entity entity) {
+        if (gp.player == null) {
+            return false;
+        }
+
+        // code smell fixed
+        positionSolidArea(entity);
+        // code smell fixed
+        positionSolidArea(gp.player);
+        boolean contact = entity.solidArea.intersects(gp.player.solidArea);
+        // code smell fixed
+        resetSolidArea(entity);
+        // code smell fixed
+        resetSolidArea(gp.player);
+        return contact;
     }
 }
