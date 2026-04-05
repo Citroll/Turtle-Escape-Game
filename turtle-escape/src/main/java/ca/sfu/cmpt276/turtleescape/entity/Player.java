@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import ca.sfu.cmpt276.turtleescape.UI.GamePanel;
+import ca.sfu.cmpt276.turtleescape.audio.Sound;
 import ca.sfu.cmpt276.turtleescape.input.KeyHandler;
 import ca.sfu.cmpt276.turtleescape.object.SuperObject;
 import ca.sfu.cmpt276.turtleescape.object.SuperPunishment;
@@ -170,7 +171,7 @@ public class Player extends Entity {
             int col = (worldX + gp.tileSize / 2) / gp.tileSize;
             int row = (worldY + gp.tileSize / 2) / gp.tileSize;
             int tileNum = gp.tileM.mapTileNum[col][row];
-            int soundIndex = (tileNum == 0) ? 2 : 3; // water=3, sand=2
+            int soundIndex = (tileNum == 0) ? Sound.SFX_WALK : Sound.SFX_SWIM;
 
             // Start or switch the looping move sound
             if (!moveSoundPlaying || currentMoveSoundIndex != soundIndex) {
@@ -240,7 +241,7 @@ public class Player extends Entity {
                     case "Seaweed":
                         score += 100;
                         gp.obj[index] = null;
-                        gp.playSE(1);
+                        gp.playSE(Sound.SFX_PICKUP);
                         gp.ui.triggerGreenFlash();
                         break;
                     case "IceCream":
@@ -248,19 +249,19 @@ public class Player extends Entity {
                         if (index == 1) gp.setIceCreamCollected(1);
                         if (index == 2) gp.setIceCreamCollected(2);
                         gp.obj[index] = null;
-                        gp.playSE(1);
+                        gp.playSE(Sound.SFX_PICKUP);
                         gp.ui.triggerGreenFlash();
                         break;
                     case "Jellyfish":
                         score += 100;
                         gp.obj[index] = null;
-                        gp.playSE(1);
+                        gp.playSE(Sound.SFX_PICKUP);
                         gp.ui.triggerGreenFlash();
                         break;
                     case "Shrimp":
                         score += 100;
                         gp.obj[index] = null;
-                        gp.playSE(1);
+                        gp.playSE(Sound.SFX_PICKUP);
                         gp.ui.triggerGreenFlash();
                         break;
                 }

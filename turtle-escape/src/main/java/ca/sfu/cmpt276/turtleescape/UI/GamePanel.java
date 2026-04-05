@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import ca.sfu.cmpt276.turtleescape.ai.Pathfinder;
 import ca.sfu.cmpt276.turtleescape.audio.AudioManager;
+import ca.sfu.cmpt276.turtleescape.audio.Sound;
 import ca.sfu.cmpt276.turtleescape.collision.CollisionChecker;
 import ca.sfu.cmpt276.turtleescape.entity.Entity;
 import ca.sfu.cmpt276.turtleescape.entity.Player;
@@ -119,7 +120,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, PanelS
     public void setupGame() {
         aSetter.setObject();
         aSetter.setMonster();
-        playMusic(0);
+        playMusic(Sound.MUSIC);
     }
 
     /**
@@ -201,7 +202,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, PanelS
 
         if (gameState == GameState.DEAD && stateAtStart != GameState.DEAD) {
             audio.stopAll();
-            playSE(4);
+            playSE(Sound.SFX_DEATH);
         }
     }
 
@@ -328,7 +329,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, PanelS
         ui.playTime = 0;
 
         // restart background music
-        playMusic(0);
+        playMusic(Sound.MUSIC);
 
         gameState = GameState.PLAYING;
     }
