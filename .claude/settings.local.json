@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/SFU_OneDrive/\"OneDrive - Simon Fraser University \\(1sfu\\)\"/CMPT276/Project/CMPT276S26_Group11 -type f -name \"*.java\")",
+      "Bash(ls -la /c/SFU_OneDrive/\"OneDrive - Simon Fraser University \\(1sfu\\)\"/CMPT276/Project/CMPT276S26_Group11/)",
+      "Bash(ls -la /c/SFU_OneDrive/\"OneDrive - Simon Fraser University \\(1sfu\\)\"/CMPT276/Project/CMPT276S26_Group11/turtle-escape/)",
+      "Bash(find /c/SFU_OneDrive/\"OneDrive - Simon Fraser University \\(1sfu\\)\"/CMPT276/Project/CMPT276S26_Group11/turtle-escape/src -type d)",
+      "Bash(find /c/SFU_OneDrive/\"OneDrive - Simon Fraser University \\(1sfu\\)\"/CMPT276/Project/CMPT276S26_Group11/turtle-escape/src -type f -name \"*.java\")",
+      "Bash(find /c/SFU_OneDrive/\"OneDrive - Simon Fraser University \\(1sfu\\)\"/CMPT276/Project/CMPT276S26_Group11/turtle-escape/src/main/resources -type f)",
+      "Bash(cat /c/SFU_OneDrive/\"OneDrive - Simon Fraser University \\(1sfu\\)\"/CMPT276/Project/CMPT276S26_Group11/README.md)"
+    ]
+  }
+}
