@@ -7,17 +7,16 @@ import ca.sfu.cmpt276.turtleescape.entity.Entity;
 
 public class SuperEnemy extends Entity {
 
-
     // Beach boundary in tile coordinates
     private final int minCol;
     private final int maxCol;
     private final int minRow;
-    private final int maxRow ;
-
+    private final int maxRow;
 
     private final Random random = new Random();
 
-    public SuperEnemy(GamePanel gp, String spriteName, int minCol, int maxCol, int minRow, int maxRow, int tileSizeX, int tileSizeY) {
+    public SuperEnemy(GamePanel gp, String spriteName, int minCol, int maxCol, int minRow, int maxRow, int tileSizeX,
+            int tileSizeY) {
         super(gp);
 
         this.minCol = minCol;
@@ -37,44 +36,70 @@ public class SuperEnemy extends Entity {
     }
 
     public void getImage(String spriteName) {
-        up1    = setUp("enemies/" + spriteName + "Up");
-        up2    = setUp("enemies/" + spriteName + "Up");
-        down1  = setUp("enemies/" + spriteName + "Down");
-        down2  = setUp("enemies/" + spriteName + "Down");
-        left1  = setUp("enemies/" + spriteName + "Left");
-        left2  = setUp("enemies/" + spriteName + "Left");
+        up1 = setUp("enemies/" + spriteName + "Up");
+        up2 = setUp("enemies/" + spriteName + "Up");
+        down1 = setUp("enemies/" + spriteName + "Down");
+        down2 = setUp("enemies/" + spriteName + "Down");
+        left1 = setUp("enemies/" + spriteName + "Left");
+        left2 = setUp("enemies/" + spriteName + "Left");
         right1 = setUp("enemies/" + spriteName + "Right");
         right2 = setUp("enemies/" + spriteName + "Right");
     }
 
     public void update() {
         super.update();
+        enforceBeachBoundaries();
+        avoidOtherEnemies();
+    }
 
+    /**
+     * Keeps this enemy within the beach boundary area.
+     * If the enemy moves outside boundaries, repositions it and changes direction.
+     */
+    private void enforceBeachBoundaries() {
         int currentCol = worldX / gp.tileSize;
         int currentRow = worldY / gp.tileSize;
 
         if (currentCol < minCol) {
             worldX = minCol * gp.tileSize;
             direction = "right";
-            // nudge vertically so they don't stack
-            worldY += (random.nextInt(3) - 1) * gp.tileSize;
+            nudgeRandomly(true);
         }
         if (currentCol > maxCol) {
             worldX = maxCol * gp.tileSize;
             direction = "left";
-            worldY += (random.nextInt(3) - 1) * gp.tileSize;
+            nudgeRandomly(true);
         }
         if (currentRow < minRow) {
             worldY = minRow * gp.tileSize;
             direction = "down";
-            worldX += (random.nextInt(3) - 1) * gp.tileSize;
+            nudgeRandomly(false);
         }
         if (currentRow > maxRow) {
             worldY = maxRow * gp.tileSize;
             direction = "up";
-            worldX += (random.nextInt(3) - 1) * gp.tileSize;
+            nudgeRandomly(false);
         }
+    }
 
+    /**
+     * Applies a random nudge to prevent enemies from stacking on boundaries.
+     *
+     * @param isVertical true to nudge vertically, false to nudge horizontally
+     */
+    private void nudgeRandomly(boolean isVertical) {
+        int nudgeAmount = (random.nextInt(3) - 1) * gp.tileSize;
+        if (isVertical) {
+            worldY += nudgeAmount;
+        } else {
+            worldX += nudgeAmount;
+        }
+    }
+
+    /**
+     * Pushes this enemy away from any nearby enemies to prevent overlap.
+     */
+    private void avoidOtherEnemies() {
         for (int i = 0; i < gp.enemy.length; i++) {
             if (gp.enemy[i] != null && gp.enemy[i] != this) {
                 int dx = worldX - gp.enemy[i].worldX;
@@ -105,8 +130,10 @@ public class SuperEnemy extends Entity {
         boolean playerOnBeach = playerCol >= minCol && playerCol <= maxCol
                 && playerRow >= minRow && playerRow <= maxRow;
 
-        if (!onPath && tileDistance < 20 && playerOnBeach) onPath = true;
-        if (onPath && (tileDistance > 30 || !playerOnBeach)) onPath = false;
+        if (!onPath && tileDistance < 20 && playerOnBeach)
+            onPath = true;
+        if (onPath && (tileDistance > 30 || !playerOnBeach))
+            onPath = false;
 
         if (onPath) {
             int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
