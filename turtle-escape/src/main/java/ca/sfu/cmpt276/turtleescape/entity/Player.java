@@ -171,7 +171,7 @@ public class Player extends Entity {
             int col = (worldX + gp.tileSize / 2) / gp.tileSize;
             int row = (worldY + gp.tileSize / 2) / gp.tileSize;
             int tileNum = gp.tileM.mapTileNum[col][row];
-            int soundIndex = (tileNum == 0) ? Sound.SFX_WALK : Sound.SFX_SWIM;
+            int soundIndex = (tileNum == 0 || tileNum == 13) ? Sound.SFX_WALK : Sound.SFX_SWIM;
 
             // Start or switch the looping move sound
             if (!moveSoundPlaying || currentMoveSoundIndex != soundIndex) {

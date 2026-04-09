@@ -204,6 +204,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, PanelS
             audio.stopAll();
             playSE(Sound.SFX_DEATH);
         }
+
+        if (gameState == GameState.WIN && stateAtStart != GameState.WIN) {
+            stopMoveSE();
+        }
     }
 
     /**
